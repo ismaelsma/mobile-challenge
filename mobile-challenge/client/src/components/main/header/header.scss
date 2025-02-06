@@ -1,0 +1,9 @@
+.header {
+  border-bottom: 1px solid $main-color-black;
+  margin: $size7 0;
+
+  &__logo-img {
+    width: $main-logo-width;
+    height: $main-logo-height;
+  }
+}
