@@ -1,4 +1,10 @@
 @import '_mixins.scss';
 @import '_variables.scss';
-@import '../app.scss';
+@import '../App.scss';
 @import '../components/main/header/header.scss';
+@import '../components/main/cart-page/cart-page.scss';
+@import '../components/main/phone-detail/phone-detail.scss';
+@import '../components/main/phones-list/phones-list.scss';
+@import '../components/main/phones-list/phone-item/phone-item.scss';
+@import '../components/main/phones-page/phones-page.scss';
+@import '../components/common/input-text/input-text.scss';

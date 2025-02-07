@@ -1,9 +1,42 @@
 .header {
   border-bottom: 1px solid $main-color-black;
-  margin: $size7 0;
+  margin-bottom: $size12;
+  padding: $size7 0;
 
-  &__logo-img {
-    width: $main-logo-width;
-    height: $main-logo-height;
+  &__items {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 $page-margin-desktop;
+
+    @include respond-to(small) {
+      margin: 0 $page-margin-mobile;
+    }
+  }
+
+  &__logo {
+    &-img {
+      height: $main-logo-height;
+      width: $main-logo-width;
+    }
+  }
+
+  &__cart {
+    &-container {
+      align-items: center;
+      cursor: pointer;
+      display: flex;
+      flex-direction: row;
+    }
+
+    &-img {
+      height: $size5;
+      margin-right: $size1;
+      width: $size5;
+    }
+
+    &-count {
+      margin: 0;
+    }
   }
 }

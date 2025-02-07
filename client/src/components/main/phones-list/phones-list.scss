@@ -1,0 +1,14 @@
+.phones-list {
+  &__input {
+    margin-bottom: $size4;
+  }
+
+  &__results {
+    margin-bottom: $size9;
+  }
+
+  &__phones {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}

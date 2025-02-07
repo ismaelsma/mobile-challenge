@@ -16,12 +16,16 @@ const agent = new https.Agent({
 
 app.get("/phonelist", async (req, res) => {
   try {
-    const response = await axios.get("https://prueba-tecnica-api-tienda-moviles.onrender.com/products", {
-      headers: {
-        "x-api-key": "87909682e6cd74208f41a6ef39fe4191",
-      },
-      httpsAgent: agent,
-    });
+    const searchText = req.query.search || "";
+    const response = await axios.get(
+      `https://prueba-tecnica-api-tienda-moviles.onrender.com/products${searchText ? `?search=${searchText}` : ""}`,
+      {
+        headers: {
+          "x-api-key": "87909682e6cd74208f41a6ef39fe4191",
+        },
+        httpsAgent: agent,
+      }
+    );
     res.json(response.data);
   } catch (error) {
     res.status(500).json({ message: error.message });
