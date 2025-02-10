@@ -6,7 +6,7 @@ export interface IPhoneListItem {
   imageUrl: string;
 }
 
-interface IPhoneSpecs {
+export interface IPhoneSpecs {
   screen: string;
   resolution: string;
   processor: string;
