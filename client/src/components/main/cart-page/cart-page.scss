@@ -1,0 +1,43 @@
+.cart {
+  &__items {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+
+    &-item {
+      align-items: center;
+      box-sizing: border-box;
+      cursor: pointer;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 100%;
+      flex: 1 0 24%;
+      max-width: calc(25%);
+      position: relative;
+
+      &:before {
+        content: '';
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        height: calc(100% - 1px);
+        width: calc(100% - 1px);
+        border: 1px solid $main-color-black;
+      }
+
+      @include respond-to(medium) {
+        justify-content: initial;
+        aspect-ratio: initial;
+        max-width: calc(50%);
+        flex: 1 0 49%;
+      }
+      @include respond-to(small) {
+        justify-content: initial;
+        aspect-ratio: initial;
+        max-width: 100%;
+        flex: 1 0 99%;
+      }
+    }
+  }
+}

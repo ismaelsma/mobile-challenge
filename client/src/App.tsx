@@ -22,11 +22,11 @@ const App = () => {
       <PhonesListProvider>
         <PhoneDetailProvider>
           <CartItemsProvider>
-            <div className="header-container">
-              <Header />
-            </div>
-            <div className="content-container">
-              <Router>
+            <Router>
+              <div className="header-container">
+                <Header />
+              </div>
+              <div className="content-container">
                 <Routes>
                   <Route
                     key="not-found"
@@ -50,8 +50,8 @@ const App = () => {
                   />
                   <Route key="cart" path="/cart" element={<CartPage />} />
                 </Routes>
-              </Router>
-            </div>
+              </div>
+            </Router>
           </CartItemsProvider>
         </PhoneDetailProvider>
       </PhonesListProvider>
