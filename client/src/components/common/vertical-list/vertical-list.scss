@@ -1,0 +1,61 @@
+.vertical-list {
+  width: 100%;
+
+  &__container {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__item {
+    display: flex;
+    min-height: $size12;
+    flex-direction: row;
+    position: relative;
+    width: 100%;
+
+    &-title {
+      height: min-content;
+      margin-top: $size4;
+      margin-bottom: 0;
+      min-width: $component-vertical-list-titles-width-desktop;
+      width: $component-vertical-list-titles-width-desktop;
+
+      @include respond-to(medium) {
+        min-width: $component-vertical-list-titles-width-tablet;
+        width: $component-vertical-list-titles-width-tablet;
+      }
+
+      @include respond-to(small) {
+        min-width: $component-vertical-list-titles-width-mobile;
+        width: $component-vertical-list-titles-width-mobile;
+      }
+    }
+
+    &-value {
+      margin-bottom: $size4;
+      margin-top: $size4;
+    }
+
+    &:last-child {
+      &:after {
+        content: '';
+        top: 100%;
+        left: 0px;
+        width: 100%;
+        position: absolute;
+        height: 0.5px;
+        background-color: $main-color-black;
+      }
+    }
+    &:before {
+      content: '';
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      position: absolute;
+      height: 0.5px;
+      background-color: $main-color-black;
+    }
+  }
+}
