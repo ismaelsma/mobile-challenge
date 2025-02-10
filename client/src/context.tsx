@@ -4,24 +4,30 @@ import {
   IPhoneDetailContext,
   IPhoneListContext
 } from './types/context.types';
-import { PhoneDetailModel } from './types/phone.types';
+import { IPhoneListItem, PhoneDetailModel } from './types/phone.types';
 
 // MOBILE LIST API CONTEXT
 const PhonesListContext = createContext<IPhoneListContext>({
   phonesList: [],
+  prevSearch: '',
   loading: true,
-  fetchPhonesList: async () => {} // Función vacía como valor inicial
+  fetchPhonesList: async () => {}, // Función vacía como valor inicial
+  forceSetLoadingTrue: () => {}
 });
 
 // Proveedor del contexto
 export const PhonesListProvider = ({ children }) => {
-  const [phonesList, setPhonesList] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [phonesList, setPhonesList] = useState<IPhoneListItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [prevSearch, setPrevSearch] = useState<string>('');
 
   // Hacer una petición a la API (Node.js)
   const fetchPhonesList = async (searchText?: string) => {
     try {
       setLoading(true);
+      if (searchText) {
+        setPrevSearch(searchText);
+      }
       const response = await fetch(
         `http://localhost:3001/phonelist${searchText ? `?search=${searchText}` : ''}`
       );
@@ -34,13 +40,23 @@ export const PhonesListProvider = ({ children }) => {
     }
   };
 
+  const forceSetLoadingTrue = () => {
+    setLoading(true);
+  };
+
   useEffect(() => {
     fetchPhonesList();
   }, []);
 
   return (
     <PhonesListContext.Provider
-      value={{ fetchPhonesList, phonesList, loading }}
+      value={{
+        fetchPhonesList,
+        phonesList,
+        loading,
+        prevSearch,
+        forceSetLoadingTrue
+      }}
     >
       {children}
     </PhonesListContext.Provider>
@@ -116,7 +132,7 @@ export const PhoneDetailProvider = ({ children }) => {
     try {
       setLoading(true);
       const response = await fetch(
-        `http://localhost:3001/phonelist/${phone} : ''}`
+        `http://localhost:3001/phonelist${phone ? `?detail=${phone}` : ''}`
       );
       const data = await response.json();
       setPhoneDetail(data);

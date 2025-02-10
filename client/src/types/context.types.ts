@@ -3,7 +3,9 @@ import { IPhoneDetail, IPhoneListItem } from './phone.types';
 export interface IPhoneListContext {
   phonesList: IPhoneListItem[];
   loading: boolean;
+  prevSearch: string;
   fetchPhonesList: (searchText?: string) => Promise<void>;
+  forceSetLoadingTrue: () => void;
 }
 
 export interface IPhoneDetailContext {
