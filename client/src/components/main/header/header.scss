@@ -16,6 +16,7 @@
 
   &__logo {
     &-img {
+      cursor: pointer;
       height: $main-logo-height;
       width: $main-logo-width;
     }

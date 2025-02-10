@@ -1,7 +1,17 @@
+import { useNavigate } from 'react-router-dom';
 import { useCartItemsContext } from '../../../context';
 
 const Header = () => {
-  const { cartItems, displayCart } = useCartItemsContext();
+  const { cartItems } = useCartItemsContext();
+  const navigate = useNavigate();
+
+  const mainMenu = () => {
+    navigate('/phone-list');
+  };
+
+  const displayCart = () => {
+    navigate('/cart');
+  };
 
   return (
     <div className="header">
@@ -11,6 +21,7 @@ const Header = () => {
             src="/assets/main-logo.svg"
             alt="MBST logo"
             className="header__logo-img"
+            onClick={mainMenu}
           />
         </div>
         <div className="header__cart-container" onClick={displayCart}>
