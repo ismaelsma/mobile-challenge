@@ -5,8 +5,10 @@ import {
   IPhoneListContext
 } from './types/context.types';
 import {
+  IPhoneColorOption,
   IPhoneDetail,
   IPhoneListItem,
+  IPhoneStorageOption,
   PhoneDetailModel
 } from './types/phone.types';
 import { ICartItemsModel } from './types/cart.types';
@@ -72,10 +74,12 @@ export const usePhonesListContext = () => useContext(PhonesListContext);
 // CART CONTEXT
 const CartItemsContext = createContext<ICartItemsContext>({
   cartItems: [],
-  addItem: (phoneItem: IPhoneDetail, color: string, storage: string) => {},
+  addItem: (
+    phoneItem: IPhoneDetail,
+    color: IPhoneColorOption,
+    storage: IPhoneStorageOption
+  ) => {},
   deleteItem: (deleteIndex: number) => {},
-  displayCart: () => {},
-  hideCart: () => {},
   cartDisplayed: false
 });
 
@@ -83,7 +87,11 @@ export const CartItemsProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState<ICartItemsModel[]>([]);
   const [cartDisplayed, setCartDisplayed] = useState(false);
 
-  const addItem = (item: IPhoneDetail, color: string, storage: string) => {
+  const addItem = (
+    item: IPhoneDetail,
+    color: IPhoneColorOption,
+    storage: IPhoneStorageOption
+  ) => {
     const newItems: ICartItemsModel[] = [
       ...cartItems,
       {
@@ -111,15 +119,6 @@ export const CartItemsProvider = ({ children }) => {
       JSON.stringify(cartItems)
     );
   };
-
-  const displayCart = () => {
-    setCartDisplayed(true);
-  };
-
-  const hideCart = () => {
-    setCartDisplayed(false);
-  };
-
   useEffect(() => {
     if (localStorage.getItem('mobile-challenge:cart-items')) {
       setCartItems(
@@ -134,8 +133,6 @@ export const CartItemsProvider = ({ children }) => {
         cartItems,
         addItem,
         deleteItem,
-        displayCart,
-        hideCart,
         cartDisplayed
       }}
     >
