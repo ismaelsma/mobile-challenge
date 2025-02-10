@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useCartItemsContext, usePhonesListContext } from '../../../context';
 import PhoneDetail from '../phone-detail/phone-detail';
 import InputText from '../../common/input-text/input-text';
-import PhoneItem from './phone-item/phone-item';
+import PhoneItem from '../phone-item/phone-item';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Loader from '../../common/loader/loader';
 
@@ -10,7 +10,6 @@ const PhonesList = () => {
   const { fetchPhonesList } = usePhonesListContext();
   const { phonesList, loading } = usePhonesListContext();
   const [searchText, setSearchText] = useState<string>('');
-  const [firstLoad, setFirstLoad] = useState<boolean>(true);
   const [isFirstSearch, setIsFirstSearch] = useState<boolean>(true);
   const location = useLocation();
   const navigate = useNavigate();
@@ -31,13 +30,9 @@ const PhonesList = () => {
   }, []);
 
   useEffect(() => {
-    if (firstLoad) {
-      setFirstLoad(false);
-      return;
-    }
     // This function will only be triggerred if user stops typing for 0.3 seconds
     const callTimeoutDelay = setTimeout(() => {
-      navigate(`/phone-list?search=${searchText}`);
+      navigate(`/phone-list${searchText ? `?search=${searchText}` : ''}`);
       fetchPhonesList(searchText);
     }, 300);
 
@@ -72,7 +67,7 @@ const PhonesList = () => {
             {loading ? (
               <Loader />
             ) : (
-              phonesList.map((phone) => <PhoneItem {...phone} />)
+              phonesList.map((phone) => <PhoneItem {...phone} key={phone.id} />)
             )}
           </div>
         </>

@@ -1,8 +1,8 @@
-import { IPhoneListItem } from '../../../../types/phone.types';
+import { IPhoneListItem } from '../../../types/phone.types';
 import { useNavigate } from 'react-router-dom';
 
-const PhoneItem = (props: IPhoneListItem) => {
-  const { id, name, brand, basePrice, imageUrl } = props;
+const PhoneItem = (props: IPhoneListItem & { fixWidth?: boolean }) => {
+  const { id, name, brand, basePrice, imageUrl, fixWidth } = props;
   const navigate = useNavigate();
 
   const getPhoneLink = (phoneId: string) => {
@@ -11,7 +11,7 @@ const PhoneItem = (props: IPhoneListItem) => {
 
   return (
     <div
-      className="phone-item"
+      className={`phone-item ${fixWidth ? '--fix-size' : ''}`}
       onClick={() => {
         getPhoneLink(id);
       }}
