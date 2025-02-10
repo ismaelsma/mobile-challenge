@@ -1,0 +1,90 @@
+.phone-detail {
+  &__return {
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    margin-bottom: $size10;
+    max-width: min-content;
+
+    &-img {
+      font-weight: bold;
+      margin-right: $size2;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: row;
+    margin: 0 $page-detail-content-margin-desktop;
+    padding: $size10 0;
+
+    @include respond-to(medium) {
+      margin: 0;
+    }
+
+    @include respond-to(small) {
+      margin: 0;
+    }
+
+    &-image {
+      width: 35%;
+
+      img {
+        width: 100%;
+      }
+    }
+
+    &-mainspecs {
+      padding-top: $size8;
+      padding-left: $page-mobile-specs-padding-desktop;
+      width: 65%;
+    }
+
+    &-titles {
+      margin-bottom: $size8;
+
+      &-name {
+        margin-bottom: $size4;
+      }
+    }
+
+    &-storage {
+      &-title {
+        margin-bottom: $size4;
+      }
+
+      &-options {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+      }
+
+      &-option {
+        background-color: initial;
+        border: 1px solid $main-color-grey;
+        cursor: pointer;
+        height: $page-detail-button-height-desktop;
+        width: $page-detail-button-width-desktop;
+
+        &:hover {
+          background-color: rgba($main-color-grey, 0.3);
+        }
+
+        &.--selected {
+          border-color: $main-color-black;
+        }
+
+        @include respond-to(medium) {
+          width: $page-detail-button-width-mobile;
+          height: $page-detail-button-height-mobile;
+        }
+
+        @include respond-to(small) {
+          width: $page-detail-button-width-mobile;
+          height: $page-detail-button-height-mobile;
+        }
+      }
+    }
+  }
+}

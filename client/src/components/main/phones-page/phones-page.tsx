@@ -7,11 +7,7 @@ const PhonesPage = () => {
 
   return (
     <div className="phones-page">
-      {phoneActive ? (
-        <PhoneDetail phone={phoneActive} />
-      ) : (
-        <PhonesList setPhoneActive={setPhoneActive}></PhonesList>
-      )}
+      {phoneActive ? <PhoneDetail /> : <PhonesList></PhonesList>}
     </div>
   );
 };
