@@ -17,8 +17,9 @@ const agent = new https.Agent({
 app.get("/phonelist", async (req, res) => {
   try {
     const searchText = req.query.search || "";
+    const detailText = req.query.detail || "";
     const response = await axios.get(
-      `https://prueba-tecnica-api-tienda-moviles.onrender.com/products${searchText ? `?search=${searchText}` : ""}`,
+      `https://prueba-tecnica-api-tienda-moviles.onrender.com/products${searchText ? `?search=${searchText}` : detailText ? `/${detailText}` : ""}`,
       {
         headers: {
           "x-api-key": "87909682e6cd74208f41a6ef39fe4191",
