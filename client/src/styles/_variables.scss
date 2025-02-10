@@ -11,11 +11,17 @@ $size9: 36px;
 $size10: 40px;
 $size11: 44px;
 $size12: 48px;
-$main-font-family: 'Helvetica', 'Arial', 'sans-serif';
+$main-font-family: 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif';
 
 // Custom main sizes
 $page-margin-desktop: 100px;
 $page-margin-mobile: 16px;
+$page-detail-content-margin-desktop: 180px;
+$page-mobile-specs-padding-desktop: 160px;
+$page-detail-button-width-desktop: 94px;
+$page-detail-button-width-mobile: 90px;
+$page-detail-button-height-desktop: 64px;
+$page-detail-button-height-mobile: 48px;
 
 // Custom header sizes
 $main-logo-width: 74px;
@@ -23,6 +29,7 @@ $main-logo-height: 24px;
 
 // Colors
 $main-color-black: #000000;
+$main-color-grey: #cccccc;
 
 // Fonts
 $default-p-size: $size3;

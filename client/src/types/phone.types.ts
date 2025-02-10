@@ -23,7 +23,7 @@ interface IPhoneColorOptions {
   imageUrl: string;
 }
 
-interface IPhoneStorageOptions {
+export interface IPhoneStorageOptions {
   capacity: string;
   price: number;
 }
