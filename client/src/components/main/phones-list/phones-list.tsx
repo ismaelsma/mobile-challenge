@@ -1,20 +1,34 @@
 import { useEffect, useState } from 'react';
 import { useCartItemsContext, usePhonesListContext } from '../../../context';
 import PhoneDetail from '../phone-detail/phone-detail';
-import { IPhonesListProps } from './phones-list.types';
 import InputText from '../../common/input-text/input-text';
 import PhoneItem from './phone-item/phone-item';
+import { useLocation, useNavigate } from 'react-router-dom';
+import Loader from '../../common/loader/loader';
 
-const PhonesList = (props: IPhonesListProps) => {
+const PhonesList = () => {
   const { fetchPhonesList } = usePhonesListContext();
-  const { phonesList } = usePhonesListContext();
-  const { setPhoneActive } = props;
+  const { phonesList, loading } = usePhonesListContext();
   const [searchText, setSearchText] = useState<string>('');
   const [firstLoad, setFirstLoad] = useState<boolean>(true);
+  const [isFirstSearch, setIsFirstSearch] = useState<boolean>(true);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const setSearch = (text: string) => {
+    setIsFirstSearch(false);
     setSearchText(text || '');
   };
+
+  useEffect(() => {
+    // Extraer el parámetro 'search' de la query string solo una vez cuando el componente se monta
+    const queryParams = new URLSearchParams(location.search);
+    const query = queryParams.get('search'); // El parámetro 'search'
+
+    if (query) {
+      setSearch(query); // Establecer el valor de la búsqueda
+    }
+  }, []);
 
   useEffect(() => {
     if (firstLoad) {
@@ -23,6 +37,7 @@ const PhonesList = (props: IPhonesListProps) => {
     }
     // This function will only be triggerred if user stops typing for 0.3 seconds
     const callTimeoutDelay = setTimeout(() => {
+      navigate(`/phone-list?search=${searchText}`);
       fetchPhonesList(searchText);
     }, 300);
 
@@ -32,26 +47,36 @@ const PhonesList = (props: IPhonesListProps) => {
 
   return (
     <div className="phones-list">
-      <div className="phones-list__input-text">
-        <InputText
-          className="phones-list__input-text-item"
-          name="phone-list-search"
-          id="phone-list-search"
-          value={searchText}
-          onChange={setSearch}
-          placeholder={'Search for an smartphone'}
-        ></InputText>
-      </div>
-      <div className="phones-list__results">
-        <p className="phones-list__results-item">
-          RESULTS: {phonesList.length}
-        </p>
-      </div>
-      <div className="phones-list__phones">
-        {phonesList.map((phone) => (
-          <PhoneItem {...phone} key={phone.id} />
-        ))}
-      </div>
+      {loading && isFirstSearch ? (
+        <Loader />
+      ) : (
+        <>
+          <div className="phones-list__input-text">
+            <InputText
+              className="phones-list__input-text-item"
+              name="phone-list-search"
+              id="phone-list-search"
+              value={searchText}
+              onChange={setSearch}
+              placeholder={'Search for an smartphone'}
+            ></InputText>
+          </div>
+          <div className="phones-list__results">
+            {!loading && (
+              <p className="phones-list__results-item">
+                RESULTS: {phonesList.length}
+              </p>
+            )}
+          </div>
+          <div className="phones-list__phones">
+            {loading ? (
+              <Loader />
+            ) : (
+              phonesList.map((phone) => <PhoneItem {...phone} />)
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 };
