@@ -17,6 +17,8 @@
     display: flex;
     flex-direction: row;
     margin: 0 $page-detail-content-margin-desktop;
+    margin-bottom: $size14;
+
     padding: $size10 0;
 
     @include respond-to(medium) {
@@ -24,21 +26,49 @@
     }
 
     @include respond-to(small) {
+      flex-direction: column;
       margin: 0;
+      padding-top: 0;
     }
 
     &-image {
-      width: 35%;
+      max-width: 50%;
+      max-height: 300px;
+      @include respond-to(medium) {
+        min-width: initial;
+      }
+
+      @include respond-to(small) {
+        align-self: center;
+        aspect-ratio: 1 / 1;
+        min-width: initial;
+      }
 
       img {
-        width: 100%;
+        height: 100%;
+
+        @include respond-to(small) {
+          width: 100%;
+          object-fit: cover;
+        }
       }
     }
 
     &-mainspecs {
       padding-top: $size8;
       padding-left: $page-mobile-specs-padding-desktop;
-      width: 65%;
+      width: 380px;
+      min-width: max-content;
+
+      @include respond-to(medium) {
+        padding-left: $page-mobile-specs-padding-tablet;
+        width: initial;
+      }
+
+      @include respond-to(small) {
+        padding-left: initial;
+        width: initial;
+      }
     }
 
     &-titles {
@@ -50,6 +80,8 @@
     }
 
     &-storage {
+      margin-bottom: $size6;
+
       &-title {
         margin-bottom: $size4;
       }
@@ -85,6 +117,135 @@
           height: $page-detail-button-height-mobile;
         }
       }
+    }
+
+    &-color {
+      margin-bottom: $size6;
+
+      &-title {
+        margin-bottom: $size4;
+      }
+
+      &-options {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+      }
+
+      &-option {
+        border: 1px solid $main-color-grey;
+        cursor: pointer;
+        height: $size5;
+        margin-right: $size4;
+        position: relative;
+        width: $size5;
+
+        &.--selected {
+          border-color: $main-color-black;
+        }
+
+        &:after {
+          border: 1px solid $main-color-white;
+          content: '';
+          height: $size4;
+          left: 0px;
+          position: absolute;
+          top: 0px;
+          width: $size4;
+        }
+      }
+    }
+
+    &-add {
+      width: 100%;
+
+      &-button {
+        background-color: $main-color-black;
+        color: $main-color-white;
+        cursor: pointer;
+        height: $size14;
+        width: 100%;
+
+        &.--disabled {
+          background-color: $main-color-soft-grey;
+          border: none;
+          color: $main-color-strong-grey;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+
+  &__specs {
+    margin: 0 $page-detail-content-margin-desktop;
+    margin-bottom: $page-margin-desktop;
+
+    @include respond-to(medium) {
+      margin: 0;
+      margin-bottom: $page-detail-similar-margin-top-mobile;
+    }
+
+    @include respond-to(small) {
+      margin: 0;
+      margin-bottom: $page-detail-similar-margin-top-mobile;
+    }
+
+    &-title {
+      margin-bottom: $size6;
+    }
+  }
+
+  &__similar {
+    margin: 0 $page-detail-content-margin-desktop;
+
+    @include respond-to(medium) {
+      margin: 0;
+    }
+
+    @include respond-to(small) {
+      flex-direction: column;
+      margin: 0;
+    }
+    &-title {
+      margin-bottom: $size6;
+    }
+
+    &-items {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      height: calc($page-detail-similar-card-width + $size4);
+      overflow-x: auto;
+      overflow-y: hidden;
+
+      /* Personalización de la barra de desplazamiento en Webkit (Chrome, Safari, Edge) */
+      ::-webkit-scrollbar {
+        height: 8px; /* Altura de la barra de desplazamiento horizontal */
+      }
+
+      ::-webkit-scrollbar-track {
+        background-color: #f1f1f1; /* Color del fondo de la barra de desplazamiento */
+        border-radius: 10px; /* Bordes redondeados en el track */
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background-color: #888; /* Color del thumb (parte móvil de la barra) */
+        border-radius: 10px; /* Bordes redondeados del thumb */
+        border: 2px solid #f1f1f1; /* Espacio entre el thumb y el track */
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background-color: #555; /* Cambiar color cuando el thumb es hover */
+      }
+
+      /* Personalización de la barra de desplazamiento en Firefox */
+      scrollbar-width: thin; /* Hacer la barra de desplazamiento más delgada */
+      scrollbar-color: #888 #f1f1f1; /* Color del thumb y del track en Firefox */
+    }
+
+    &-item {
+      width: $page-detail-similar-card-width;
+      height: $page-detail-similar-card-width;
     }
   }
 }

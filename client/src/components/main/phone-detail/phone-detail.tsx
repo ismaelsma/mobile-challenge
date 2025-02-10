@@ -9,11 +9,20 @@ import React, { useEffect, useState } from 'react';
 import { IPhoneDetailProps } from './phone-detail.types';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Loader from '../../common/loader/loader';
-import { IPhoneStorageOptions } from '../../../types/phone.types';
+import { IPhoneSpecs, IPhoneStorageOptions } from '../../../types/phone.types';
+import VerticalList from '../../common/vertical-list/vertical-list';
+import {
+  adaptSpecsToList,
+  checkContinueDisabled,
+  getMinorPrice,
+  getPhoneImageSrc
+} from './phone-detail.functions';
+import PhoneItem from '../phone-item/phone-item';
 
 const PhoneDetail: React.FC = () => {
   const { loading, phoneDetail, fetchPhoneDetail } = usePhoneDetailContext();
   const { prevSearch, forceSetLoadingTrue } = usePhonesListContext();
+  const { addItem } = useCartItemsContext();
   const [selectedColor, setSelectedColor] = useState<string>('');
   const [selectedStorage, setSelectedStorage] = useState<string>('');
   const navigate = useNavigate();
@@ -26,28 +35,17 @@ const PhoneDetail: React.FC = () => {
 
     if (query) {
       fetchPhoneDetail(query);
+      window.scrollTo(0, 0);
     } else {
       navigate(`/phone-list`);
     }
-  }, []);
+  }, [location]);
 
   useEffect(() => {
     if (!loading && phoneDetail.id) {
       setSelectedColor(phoneDetail.colorOptions[0].hexCode);
     }
   }, [loading]);
-
-  const getMobileImageSrc = (color: string) => {
-    return phoneDetail.colorOptions.find(
-      (color) => color.hexCode === selectedColor
-    )?.imageUrl;
-  };
-
-  const getMinorPrice = (options: IPhoneStorageOptions[]) => {
-    return options.reduce((min, option) => {
-      return option.price < min.price ? option : min;
-    })?.price;
-  };
 
   const goBackAction = () => {
     const navigateUrl = `/phone-list${prevSearch ? `?search=${prevSearch}` : ''}`;
@@ -65,13 +63,13 @@ const PhoneDetail: React.FC = () => {
         />
         <p className="phone-detail__return-text">BACK</p>
       </div>
-      <div className="phone-detail__content">
-        {loading || !phoneDetail.id ? (
-          <Loader />
-        ) : (
-          <>
+      {loading || !phoneDetail.id ? (
+        <Loader />
+      ) : (
+        <>
+          <div className="phone-detail__content">
             <div className="phone-detail__content-image">
-              <img src={getMobileImageSrc(phoneDetail.id)} />
+              <img src={getPhoneImageSrc(phoneDetail, selectedColor)} />
             </div>
             <div className="phone-detail__content-mainspecs">
               <div className="phone-detail__content-titles">
@@ -93,17 +91,64 @@ const PhoneDetail: React.FC = () => {
                       onClick={() => {
                         setSelectedStorage(option.capacity);
                       }}
+                      key={option.capacity}
+                      title={option.capacity}
                     >
                       {option.capacity}
                     </button>
                   ))}
                 </div>
               </div>
-              <div className="phone-detail__content-color"></div>
+              <div className="phone-detail__content-color">
+                <h4 className="phone-detail__content-color-title">
+                  COLOR. PICK YOUR FAVORITE.
+                </h4>
+                <div className="phone-detail__content-color-options">
+                  {phoneDetail.colorOptions.map((option) => (
+                    <button
+                      className={`phone-detail__content-color-option ${selectedColor === option.hexCode ? '--selected' : ''}`}
+                      onClick={() => {
+                        setSelectedColor(option.hexCode);
+                      }}
+                      key={option.name}
+                      title={option.name}
+                      style={{ backgroundColor: option.hexCode }}
+                    ></button>
+                  ))}
+                </div>
+              </div>
+              <div className="phone-detail__content-add">
+                <button
+                  className={`phone-detail__content-add-button ${checkContinueDisabled(selectedColor, selectedStorage) ? '--disabled' : ''}`}
+                  onClick={() => {
+                    addItem(phoneDetail, selectedColor, selectedStorage);
+                  }}
+                  disabled={checkContinueDisabled(
+                    selectedColor,
+                    selectedStorage
+                  )}
+                >
+                  ADD
+                </button>
+              </div>
             </div>
-          </>
-        )}
-      </div>
+          </div>
+          <div className="phone-detail__specs">
+            <h2 className="phone-detail__specs-title">SPECIFICATIONS</h2>
+            <div className="phone-detail__specs-list">
+              <VerticalList data={adaptSpecsToList(phoneDetail.specs)} />
+            </div>
+          </div>
+          <div className="phone-detail__similar">
+            <h2 className="phone-detail__similar-title">SIMILAR ITEMS</h2>
+            <div className="phone-detail__similar-items">
+              {phoneDetail.similarProducts.map((item) => (
+                <PhoneItem fixWidth {...item} key={item.id} />
+              ))}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
