@@ -14,6 +14,7 @@ import {
   Navigate
 } from 'react-router-dom';
 import PhoneDetail from './components/main/phone-detail/phone-detail';
+import CartPage from './components/main/cart-page/cart-page';
 
 const App = () => {
   return (
@@ -27,6 +28,11 @@ const App = () => {
             <div className="content-container">
               <Router>
                 <Routes>
+                  <Route
+                    key="not-found"
+                    path="*"
+                    element={<Navigate to="/phone-list" replace />}
+                  />
                   <Route
                     key="default"
                     path="/?"
@@ -42,6 +48,7 @@ const App = () => {
                     path="/phone-detail"
                     element={<PhoneDetail />}
                   />
+                  <Route key="cart" path="/cart" element={<CartPage />} />
                 </Routes>
               </Router>
             </div>
