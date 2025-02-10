@@ -9,13 +9,16 @@ import React, { useEffect, useState } from 'react';
 import { IPhoneDetailProps } from './phone-detail.types';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Loader from '../../common/loader/loader';
-import { IPhoneSpecs, IPhoneStorageOptions } from '../../../types/phone.types';
+import {
+  IPhoneColorOption,
+  IPhoneSpecs,
+  IPhoneStorageOption
+} from '../../../types/phone.types';
 import VerticalList from '../../common/vertical-list/vertical-list';
 import {
   adaptSpecsToList,
   checkContinueDisabled,
-  getMinorPrice,
-  getPhoneImageSrc
+  getMinorPrice
 } from './phone-detail.functions';
 import PhoneItem from '../phone-item/phone-item';
 
@@ -23,8 +26,15 @@ const PhoneDetail: React.FC = () => {
   const { loading, phoneDetail, fetchPhoneDetail } = usePhoneDetailContext();
   const { prevSearch, forceSetLoadingTrue } = usePhonesListContext();
   const { addItem } = useCartItemsContext();
-  const [selectedColor, setSelectedColor] = useState<string>('');
-  const [selectedStorage, setSelectedStorage] = useState<string>('');
+  const [selectedColor, setSelectedColor] = useState<IPhoneColorOption>({
+    hexCode: '',
+    name: '',
+    imageUrl: ''
+  });
+  const [selectedStorage, setSelectedStorage] = useState<IPhoneStorageOption>({
+    price: 0,
+    capacity: ''
+  });
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -43,7 +53,7 @@ const PhoneDetail: React.FC = () => {
 
   useEffect(() => {
     if (!loading && phoneDetail.id) {
-      setSelectedColor(phoneDetail.colorOptions[0].hexCode);
+      setSelectedColor(phoneDetail.colorOptions[0]);
     }
   }, [loading]);
 
@@ -69,7 +79,7 @@ const PhoneDetail: React.FC = () => {
         <>
           <div className="phone-detail__content">
             <div className="phone-detail__content-image">
-              <img src={getPhoneImageSrc(phoneDetail, selectedColor)} />
+              <img src={selectedColor.imageUrl} />
             </div>
             <div className="phone-detail__content-mainspecs">
               <div className="phone-detail__content-titles">
@@ -87,9 +97,9 @@ const PhoneDetail: React.FC = () => {
                 <div className="phone-detail__content-storage-options">
                   {phoneDetail.storageOptions.map((option) => (
                     <button
-                      className={`phone-detail__content-storage-option ${selectedStorage === option.capacity ? '--selected' : ''}`}
+                      className={`phone-detail__content-storage-option ${selectedStorage.capacity === option.capacity ? '--selected' : ''}`}
                       onClick={() => {
-                        setSelectedStorage(option.capacity);
+                        setSelectedStorage(option);
                       }}
                       key={option.capacity}
                       title={option.capacity}
@@ -106,9 +116,9 @@ const PhoneDetail: React.FC = () => {
                 <div className="phone-detail__content-color-options">
                   {phoneDetail.colorOptions.map((option) => (
                     <button
-                      className={`phone-detail__content-color-option ${selectedColor === option.hexCode ? '--selected' : ''}`}
+                      className={`phone-detail__content-color-option ${selectedColor?.hexCode === option.name ? '--selected' : ''}`}
                       onClick={() => {
-                        setSelectedColor(option.hexCode);
+                        setSelectedColor(option);
                       }}
                       key={option.name}
                       title={option.name}

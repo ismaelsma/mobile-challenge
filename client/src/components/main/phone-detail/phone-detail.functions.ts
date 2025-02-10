@@ -1,29 +1,21 @@
 import {
+  IPhoneColorOption,
   IPhoneDetail,
   IPhoneSpecs,
-  IPhoneStorageOptions
+  IPhoneStorageOption
 } from '../../../types/phone.types';
 
-export const getPhoneImageSrc = (
-  phoneDetail: IPhoneDetail,
-  selectedColor: string
-) => {
-  return phoneDetail.colorOptions.find(
-    (color) => color.hexCode === selectedColor
-  )?.imageUrl;
-};
-
-export const getMinorPrice = (options: IPhoneStorageOptions[]) => {
+export const getMinorPrice = (options: IPhoneStorageOption[]) => {
   return options.reduce((min, option) => {
     return option.price < min.price ? option : min;
   })?.price;
 };
 
 export const checkContinueDisabled = (
-  selectedColor: string,
-  selectedStorage: string
+  selectedColor: IPhoneColorOption,
+  selectedStorage: IPhoneStorageOption
 ) => {
-  return !selectedColor || !selectedStorage;
+  return !selectedColor.name || !selectedStorage.capacity;
 };
 
 export const parseKey = (key: string) => {
