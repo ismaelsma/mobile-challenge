@@ -4,7 +4,12 @@ import {
   IPhoneDetailContext,
   IPhoneListContext
 } from './types/context.types';
-import { IPhoneListItem, PhoneDetailModel } from './types/phone.types';
+import {
+  IPhoneDetail,
+  IPhoneListItem,
+  PhoneDetailModel
+} from './types/phone.types';
+import { ICartItemsModel } from './types/cart.types';
 
 // MOBILE LIST API CONTEXT
 const PhonesListContext = createContext<IPhoneListContext>({
@@ -32,7 +37,10 @@ export const PhonesListProvider = ({ children }) => {
         `http://localhost:3001/phonelist${searchText ? `?search=${searchText}` : ''}`
       );
       const data = await response.json();
-      setPhonesList(data);
+      const uniqueItems = data.filter(
+        (item, index, self) => index === self.findIndex((t) => t.id === item.id)
+      );
+      setPhonesList(uniqueItems.slice(0, 20));
     } catch (error) {
       console.error('Error fetching phones list:', error);
     } finally {
@@ -43,10 +51,6 @@ export const PhonesListProvider = ({ children }) => {
   const forceSetLoadingTrue = () => {
     setLoading(true);
   };
-
-  useEffect(() => {
-    fetchPhonesList();
-  }, []);
 
   return (
     <PhonesListContext.Provider
@@ -68,24 +72,43 @@ export const usePhonesListContext = () => useContext(PhonesListContext);
 // CART CONTEXT
 const CartItemsContext = createContext<ICartItemsContext>({
   cartItems: [],
-  addItem: (item: string) => {},
-  deleteItem: (item: string) => {},
+  addItem: (phoneItem: IPhoneDetail, color: string, storage: string) => {},
+  deleteItem: (deleteIndex: number) => {},
   displayCart: () => {},
   hideCart: () => {},
   cartDisplayed: false
 });
 
 export const CartItemsProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState<ICartItemsModel[]>([]);
   const [cartDisplayed, setCartDisplayed] = useState(false);
 
-  const addItem = (item) => {
-    setCartItems((prevItems) => [...prevItems, item]);
+  const addItem = (item: IPhoneDetail, color: string, storage: string) => {
+    const newItems: ICartItemsModel[] = [
+      ...cartItems,
+      {
+        phoneInfo: item,
+        color,
+        storage,
+        quantity: 1
+      }
+    ];
+    setLocalStorage(newItems);
+    setCartItems(newItems);
   };
 
-  const deleteItem = (item) => {
-    setCartItems((prevItems) =>
-      prevItems.filter((prevItem) => prevItem.id !== item.id)
+  const deleteItem = (deleteIndex: number) => {
+    const newItems: ICartItemsModel[] = JSON.parse(
+      JSON.stringify(cartItems)
+    ).filter((_, index) => index !== deleteIndex);
+    setLocalStorage(newItems);
+    setCartItems(newItems);
+  };
+
+  const setLocalStorage = (cartItems: ICartItemsModel[]) => {
+    localStorage.setItem(
+      'mobile-challenge:cart-items',
+      JSON.stringify(cartItems)
     );
   };
 
@@ -96,6 +119,14 @@ export const CartItemsProvider = ({ children }) => {
   const hideCart = () => {
     setCartDisplayed(false);
   };
+
+  useEffect(() => {
+    if (localStorage.getItem('mobile-challenge:cart-items')) {
+      setCartItems(
+        JSON.parse(localStorage.getItem('mobile-challenge:cart-items'))
+      );
+    }
+  }, []);
 
   return (
     <CartItemsContext.Provider
