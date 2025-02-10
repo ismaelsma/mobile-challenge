@@ -17,13 +17,13 @@ export interface IPhoneSpecs {
   screenRefreshRate: string;
 }
 
-interface IPhoneColorOptions {
+export interface IPhoneColorOption {
   name: string;
   hexCode: string;
   imageUrl: string;
 }
 
-export interface IPhoneStorageOptions {
+export interface IPhoneStorageOption {
   capacity: string;
   price: number;
 }
@@ -36,8 +36,8 @@ export interface IPhoneDetail {
   basePrice: number;
   rating: number;
   specs: IPhoneSpecs;
-  colorOptions: IPhoneColorOptions[];
-  storageOptions: IPhoneStorageOptions[];
+  colorOptions: IPhoneColorOption[];
+  storageOptions: IPhoneStorageOption[];
   similarProducts: IPhoneListItem[];
 }
 
@@ -49,8 +49,8 @@ export class PhoneDetailModel implements IPhoneDetail {
   basePrice: number;
   rating: number;
   specs: IPhoneSpecs;
-  colorOptions: IPhoneColorOptions[];
-  storageOptions: IPhoneStorageOptions[];
+  colorOptions: IPhoneColorOption[];
+  storageOptions: IPhoneStorageOption[];
   similarProducts: IPhoneListItem[];
 
   constructor() {

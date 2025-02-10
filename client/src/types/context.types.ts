@@ -1,4 +1,9 @@
-import { IPhoneDetail, IPhoneListItem } from './phone.types';
+import {
+  IPhoneColorOption,
+  IPhoneDetail,
+  IPhoneListItem,
+  IPhoneStorageOption
+} from './phone.types';
 import { ICartItemsModel } from './cart.types';
 
 export interface IPhoneListContext {
@@ -17,9 +22,11 @@ export interface IPhoneDetailContext {
 
 export interface ICartItemsContext {
   cartItems: ICartItemsModel[];
-  addItem: (phoneItem: IPhoneDetail, color: string, storage: string) => void;
+  addItem: (
+    phoneItem: IPhoneDetail,
+    color: IPhoneColorOption,
+    storage: IPhoneStorageOption
+  ) => void;
   deleteItem: (deleteIndex: number) => void;
-  displayCart: () => void;
-  hideCart: () => void;
   cartDisplayed: boolean;
 }
