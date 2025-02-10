@@ -7,6 +7,13 @@ import {
   PhonesListProvider
 } from './context';
 import React from 'react';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate
+} from 'react-router-dom';
+import PhoneDetail from './components/main/phone-detail/phone-detail';
 
 const App = () => {
   return (
@@ -18,7 +25,25 @@ const App = () => {
               <Header />
             </div>
             <div className="content-container">
-              <MainPage></MainPage>
+              <Router>
+                <Routes>
+                  <Route
+                    key="default"
+                    path="/?"
+                    element={<Navigate to="/phone-list" replace />}
+                  />
+                  <Route
+                    key="phone-list"
+                    path="/phone-list"
+                    element={<MainPage />}
+                  />
+                  <Route
+                    key="phone-detail"
+                    path="/phone-detail"
+                    element={<PhoneDetail />}
+                  />
+                </Routes>
+              </Router>
             </div>
           </CartItemsProvider>
         </PhoneDetailProvider>
