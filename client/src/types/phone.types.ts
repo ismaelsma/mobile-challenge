@@ -7,14 +7,8 @@ export interface IPhoneListItem {
 }
 
 export interface IPhoneSpecs {
-  screen: string;
-  resolution: string;
-  processor: string;
-  mainCamera: string;
-  selfieCamera: string;
-  battery: string;
-  os: string;
-  screenRefreshRate: string;
+  title: string;
+  value: string;
 }
 
 export interface IPhoneColorOption {
@@ -35,7 +29,7 @@ export interface IPhoneDetail {
   description: string;
   basePrice: number;
   rating: number;
-  specs: IPhoneSpecs;
+  specs: IPhoneSpecs[];
   colorOptions: IPhoneColorOption[];
   storageOptions: IPhoneStorageOption[];
   similarProducts: IPhoneListItem[];
@@ -48,7 +42,7 @@ export class PhoneDetailModel implements IPhoneDetail {
   description: string;
   basePrice: number;
   rating: number;
-  specs: IPhoneSpecs;
+  specs: IPhoneSpecs[];
   colorOptions: IPhoneColorOption[];
   storageOptions: IPhoneStorageOption[];
   similarProducts: IPhoneListItem[];
@@ -60,16 +54,7 @@ export class PhoneDetailModel implements IPhoneDetail {
     this.description = '';
     this.basePrice = 0;
     this.rating = 0;
-    this.specs = {
-      screen: '',
-      resolution: '',
-      processor: '',
-      mainCamera: '',
-      selfieCamera: '',
-      battery: '',
-      os: '',
-      screenRefreshRate: ''
-    };
+    this.specs = [];
     this.colorOptions = [];
     this.storageOptions = [];
     this.similarProducts = [];

@@ -28,5 +28,5 @@ export interface ICartItemsContext {
     storage: IPhoneStorageOption
   ) => void;
   deleteItem: (deleteIndex: number) => void;
-  cartDisplayed: boolean;
+  deleteAll: () => void;
 }

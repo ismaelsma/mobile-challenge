@@ -1,11 +1,7 @@
 import React from 'react';
 import { IVerticalListProps } from './vertical-list.types';
 
-const VerticalList: React.FC<IVerticalListProps> = (
-  props: IVerticalListProps
-) => {
-  const { data } = props;
-
+const VerticalList: React.FC<IVerticalListProps> = ({ data }) => {
   return (
     <div className="vertical-list">
       <ul className="vertical-list__container">

@@ -3,15 +3,11 @@ import {
   usePhoneDetailContext,
   usePhonesListContext
 } from '../../../context';
-import CartPage from '../cart-page/cart-page';
-import PhonesPage from '../phones-page/phones-page';
 import React, { useEffect, useState } from 'react';
-import { IPhoneDetailProps } from './phone-detail.types';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Loader from '../../common/loader/loader';
 import {
   IPhoneColorOption,
-  IPhoneSpecs,
   IPhoneStorageOption
 } from '../../../types/phone.types';
 import VerticalList from '../../common/vertical-list/vertical-list';
@@ -21,11 +17,14 @@ import {
   getMinorPrice
 } from './phone-detail.functions';
 import PhoneItem from '../phone-item/phone-item';
+import Notification from '../../common/notification/notification';
+import CustomButton from '../../common/custom-button/custom-button';
 
 const PhoneDetail: React.FC = () => {
   const { loading, phoneDetail, fetchPhoneDetail } = usePhoneDetailContext();
   const { prevSearch, forceSetLoadingTrue } = usePhonesListContext();
   const { addItem } = useCartItemsContext();
+  const [notificationCount, setNotificationCount] = useState<number>(0);
   const [selectedColor, setSelectedColor] = useState<IPhoneColorOption>({
     hexCode: '',
     name: '',
@@ -65,6 +64,10 @@ const PhoneDetail: React.FC = () => {
 
   return (
     <div className="phone-detail">
+      <Notification
+        text={'Item added to cart!'}
+        notificationCount={notificationCount}
+      />
       <div className="phone-detail__return" onClick={goBackAction}>
         <img
           src="/assets/back-arrow.svg"
@@ -79,7 +82,10 @@ const PhoneDetail: React.FC = () => {
         <>
           <div className="phone-detail__content">
             <div className="phone-detail__content-image">
-              <img src={selectedColor.imageUrl} />
+              <img
+                src={selectedColor.imageUrl || null}
+                alt={selectedColor.name}
+              />
             </div>
             <div className="phone-detail__content-mainspecs">
               <div className="phone-detail__content-titles">
@@ -116,7 +122,7 @@ const PhoneDetail: React.FC = () => {
                 <div className="phone-detail__content-color-options">
                   {phoneDetail.colorOptions.map((option) => (
                     <button
-                      className={`phone-detail__content-color-option ${selectedColor?.hexCode === option.name ? '--selected' : ''}`}
+                      className={`phone-detail__content-color-option ${selectedColor?.name === option.name ? '--selected' : ''}`}
                       onClick={() => {
                         setSelectedColor(option);
                       }}
@@ -128,25 +134,24 @@ const PhoneDetail: React.FC = () => {
                 </div>
               </div>
               <div className="phone-detail__content-add">
-                <button
-                  className={`phone-detail__content-add-button ${checkContinueDisabled(selectedColor, selectedStorage) ? '--disabled' : ''}`}
-                  onClick={() => {
+                <CustomButton
+                  onButtonPressed={() => {
+                    setNotificationCount(notificationCount + 1);
                     addItem(phoneDetail, selectedColor, selectedStorage);
                   }}
                   disabled={checkContinueDisabled(
                     selectedColor,
                     selectedStorage
                   )}
-                >
-                  ADD
-                </button>
+                  text="ADD"
+                />
               </div>
             </div>
           </div>
           <div className="phone-detail__specs">
             <h2 className="phone-detail__specs-title">SPECIFICATIONS</h2>
             <div className="phone-detail__specs-list">
-              <VerticalList data={adaptSpecsToList(phoneDetail.specs)} />
+              <VerticalList data={phoneDetail.specs} />
             </div>
           </div>
           <div className="phone-detail__similar">

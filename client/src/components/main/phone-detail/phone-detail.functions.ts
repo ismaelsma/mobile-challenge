@@ -1,6 +1,5 @@
 import {
   IPhoneColorOption,
-  IPhoneDetail,
   IPhoneSpecs,
   IPhoneStorageOption
 } from '../../../types/phone.types';

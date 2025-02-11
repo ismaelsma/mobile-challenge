@@ -1,7 +1,13 @@
 const { inProject } = require("@amiga-fwk-web/tools-cli-utils");
 const { findFile, requireFile } = inProject();
-const prettierConfig = requireFile("<root>/config/prettier.config", "<framework>/prettier.config.js");
-const babelConfigPath = findFile("<root>/config/babel.config.js", "<framework>/babel.config.js");
+const prettierConfig = requireFile(
+  "<root>/config/prettier.config",
+  "<framework>/prettier.config.js"
+);
+const babelConfigPath = findFile(
+  "<root>/config/babel.config.js",
+  "<framework>/babel.config.js"
+);
 
 // ESLINT configuration
 // https://eslint.org/docs/user-guide/configuring
@@ -116,12 +122,18 @@ module.exports = {
 
     // Allow unused variables in some instances or when the variable name is prefixed by an underscore
     // https://eslint.org/docs/rules/no-unused-vars
-    "no-unused-vars": ["warn", { args: "none", varsIgnorePattern: "^_", ignoreRestSiblings: true }],
+    "no-unused-vars": [
+      "warn",
+      { args: "none", varsIgnorePattern: "^_", ignoreRestSiblings: true },
+    ],
 
     // Imports must point to existent files/modules
     // Webpack aliases are ignored by this rule
     // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-unresolved.md
-    "import/no-unresolved": ["error", { ignore: ["@/", "root/", "config/", "forms/", "resources/"] }],
+    "import/no-unresolved": [
+      "error",
+      { ignore: ["@/", "root/", "config/", "forms/", "resources/"] },
+    ],
 
     // Issue errors if the "rules of hooks" are not met
     // https://reactjs.org/docs/hooks-rules.html
@@ -129,7 +141,7 @@ module.exports = {
 
     // Issue errors if hooks dependencies are not exhaustive
     // https://reactjs.org/docs/hooks-rules.html
-    "react-hooks/exhaustive-deps": "off",
+    "react-hooks/exhaustive-deps": "on",
 
     // Get errors from no undef rule about global variables not being defined even though there are no typescript errors
     // https://eslint.org/docs/rules/no-undef
@@ -156,7 +168,16 @@ module.exports = {
   overrides: [
     {
       // Rules only applied to test files
-      files: ["*-test.js", "*-test.jsx", "*.test.js", "*.test.jsx", "*-test.ts", "*-test.tsx", "*.test.ts", "*.test.tsx"],
+      files: [
+        "*-test.js",
+        "*-test.jsx",
+        "*.test.js",
+        "*.test.jsx",
+        "*-test.ts",
+        "*-test.tsx",
+        "*.test.ts",
+        "*.test.tsx",
+      ],
 
       // Allow Jest global variables: jest, expect, it, test, describe, etc.
       env: {

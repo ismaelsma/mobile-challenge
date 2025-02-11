@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useCartItemsContext, usePhonesListContext } from '../../../context';
-import PhoneDetail from '../phone-detail/phone-detail';
+import { usePhonesListContext } from '../../../context';
 import InputText from '../../common/input-text/input-text';
 import PhoneItem from '../phone-item/phone-item';
 import { useLocation, useNavigate } from 'react-router-dom';

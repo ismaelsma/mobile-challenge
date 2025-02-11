@@ -15,13 +15,10 @@ const PhoneItem = (props: IPhoneListItem & { fixWidth?: boolean }) => {
       onClick={() => {
         getPhoneLink(id);
       }}
+      data-testid="phone-item"
     >
       <div className="phone-item__image">
-        <img
-          src={imageUrl}
-          alt={`${id} image`}
-          className="phone-item__image-item"
-        />
+        <img src={imageUrl} alt={`${id}`} className="phone-item__image-item" />
       </div>
       <div className="phone-item__description">
         <div className="phone-item__description-info">

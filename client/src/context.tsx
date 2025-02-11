@@ -12,13 +12,14 @@ import {
   PhoneDetailModel
 } from './types/phone.types';
 import { ICartItemsModel } from './types/cart.types';
+import { adaptSpecsToList } from './components/main/phone-detail/phone-detail.functions';
 
 // MOBILE LIST API CONTEXT
 const PhonesListContext = createContext<IPhoneListContext>({
   phonesList: [],
   prevSearch: '',
   loading: true,
-  fetchPhonesList: async () => {}, // Función vacía como valor inicial
+  fetchPhonesList: undefined, // Función vacía como valor inicial
   forceSetLoadingTrue: () => {}
 });
 
@@ -74,33 +75,41 @@ export const usePhonesListContext = () => useContext(PhonesListContext);
 // CART CONTEXT
 const CartItemsContext = createContext<ICartItemsContext>({
   cartItems: [],
-  addItem: (
-    phoneItem: IPhoneDetail,
-    color: IPhoneColorOption,
-    storage: IPhoneStorageOption
-  ) => {},
-  deleteItem: (deleteIndex: number) => {},
-  cartDisplayed: false
+  addItem: () => {},
+  deleteItem: () => {},
+  deleteAll: () => {}
 });
 
 export const CartItemsProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState<ICartItemsModel[]>([]);
-  const [cartDisplayed, setCartDisplayed] = useState(false);
 
   const addItem = (
     item: IPhoneDetail,
     color: IPhoneColorOption,
     storage: IPhoneStorageOption
   ) => {
-    const newItems: ICartItemsModel[] = [
-      ...cartItems,
-      {
-        phoneInfo: item,
-        color,
-        storage,
-        quantity: 1
-      }
-    ];
+    const index = cartItems.findIndex((cartItem) => {
+      return (
+        item.id === cartItem.phoneInfo.id &&
+        color.hexCode === cartItem.color.hexCode &&
+        storage.capacity === cartItem.storage.capacity
+      );
+    });
+    let newItems: ICartItemsModel[] = [];
+    if (index === -1) {
+      newItems = [
+        ...cartItems,
+        {
+          phoneInfo: item,
+          color,
+          storage,
+          quantity: 1
+        }
+      ];
+    } else {
+      newItems = JSON.parse(JSON.stringify(cartItems));
+      newItems[index].quantity += 1;
+    }
     setLocalStorage(newItems);
     setCartItems(newItems);
   };
@@ -109,6 +118,12 @@ export const CartItemsProvider = ({ children }) => {
     const newItems: ICartItemsModel[] = JSON.parse(
       JSON.stringify(cartItems)
     ).filter((_, index) => index !== deleteIndex);
+    setLocalStorage(newItems);
+    setCartItems(newItems);
+  };
+
+  const deleteAll = () => {
+    const newItems: ICartItemsModel[] = [];
     setLocalStorage(newItems);
     setCartItems(newItems);
   };
@@ -133,7 +148,7 @@ export const CartItemsProvider = ({ children }) => {
         cartItems,
         addItem,
         deleteItem,
-        cartDisplayed
+        deleteAll
       }}
     >
       {children}
@@ -147,7 +162,7 @@ export const useCartItemsContext = () => useContext(CartItemsContext);
 const PhoneDetailContext = createContext<IPhoneDetailContext>({
   phoneDetail: new PhoneDetailModel(),
   loading: true,
-  fetchPhoneDetail: async (value: string) => {} // Función vacía como valor inicial
+  fetchPhoneDetail: undefined // Función vacía como valor inicial
 });
 
 // Proveedor del contexto
@@ -163,7 +178,18 @@ export const PhoneDetailProvider = ({ children }) => {
         `http://localhost:3001/phonelist${phone ? `?detail=${phone}` : ''}`
       );
       const data = await response.json();
-      setPhoneDetail(data);
+      const uniqueSimilarProducts = Array.isArray(data.similarProducts)
+        ? data.similarProducts.filter(
+            (item, index, self) =>
+              index === self.findIndex((t) => t.id === item.id)
+          )
+        : [];
+      const parsedSpecs = data.specs?.os ? adaptSpecsToList(data.specs) : [];
+      setPhoneDetail({
+        ...data,
+        similarProducts: uniqueSimilarProducts,
+        specs: parsedSpecs
+      });
     } catch (error) {
       console.error('Error fetching phone detail:', error);
     } finally {

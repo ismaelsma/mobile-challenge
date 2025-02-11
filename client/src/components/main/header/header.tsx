@@ -1,16 +1,23 @@
 import { useNavigate } from 'react-router-dom';
-import { useCartItemsContext } from '../../../context';
+import { useCartItemsContext, usePhonesListContext } from '../../../context';
+import { ICartItemsModel } from '../../../types/cart.types';
 
 const Header = () => {
   const { cartItems } = useCartItemsContext();
+  const { forceSetLoadingTrue } = usePhonesListContext();
   const navigate = useNavigate();
 
   const mainMenu = () => {
+    forceSetLoadingTrue();
     navigate('/phone-list');
   };
 
   const displayCart = () => {
     navigate('/cart');
+  };
+
+  const getCartItemsNumber = (cartItems: ICartItemsModel[]) => {
+    return cartItems.reduce((total, item) => total + item.quantity, 0);
   };
 
   return (
@@ -30,7 +37,7 @@ const Header = () => {
             alt="Cart"
             className="header__cart-img"
           />
-          <p className="header__cart-count">{cartItems.length}</p>
+          <p className="header__cart-count">{getCartItemsNumber(cartItems)}</p>
         </div>
       </div>
     </div>
