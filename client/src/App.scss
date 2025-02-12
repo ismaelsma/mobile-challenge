@@ -1,0 +1,50 @@
+.app {
+  font-family: $main-font-family;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-container {
+  margin: 0 $page-margin-desktop;
+  margin-bottom: $size13;
+  height: 100%;
+
+  @include respond-to(small) {
+    margin: 0 $page-margin-mobile;
+    margin-bottom: $page-margin-mobile;
+  }
+}
+
+p {
+  font-size: $default-p-size;
+  font-weight: $default-font-weight;
+}
+
+h1 {
+  font-size: $size6;
+  font-weight: 300;
+  margin: 0;
+}
+
+h2 {
+  font-size: $size5;
+  font-weight: 300;
+  margin: 0;
+}
+
+h3 {
+  font-size: $size4;
+  font-weight: 300;
+  margin: 0;
+}
+
+h4 {
+  font-size: 14px;
+  font-weight: 300;
+  margin: 0;
+}
+
+.--red-text {
+  color: $main-color-red;
+}

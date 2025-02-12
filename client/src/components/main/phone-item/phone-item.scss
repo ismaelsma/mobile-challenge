@@ -1,0 +1,98 @@
+.phone-item {
+  align-items: center;
+  aspect-ratio: 1 / 1;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  flex: 1 0 24%;
+  max-width: calc(25%);
+  position: relative;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: calc(100% - 1px);
+    width: calc(100% - 1px);
+    border: 1px solid $main-color-black;
+  }
+
+  @include respond-to(medium) {
+    justify-content: initial;
+    aspect-ratio: initial;
+    max-width: calc(50%);
+    flex: 1 0 49%;
+  }
+  @include respond-to(small) {
+    justify-content: initial;
+    aspect-ratio: initial;
+    max-width: 100%;
+    flex: 1 0 99%;
+  }
+
+  &.--fix-size {
+    width: $page-detail-similar-card-width;
+    min-width: $page-detail-similar-card-width;
+    height: $page-detail-similar-card-width;
+    flex: initial;
+
+    .phone-item__image-item {
+      height: $page-detail-phone-image-size-mobile;
+    }
+  }
+
+  &:hover {
+    text-decoration: underline;
+    .phone-item__image {
+      transform: scale(1.1);
+    }
+  }
+
+  &__image {
+    padding: $size10 $size5 0 $size5;
+    max-height: 280px;
+    &-item {
+      max-height: 80%;
+      max-width: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__description {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: $size4;
+    width: calc(100% - $size10);
+
+    &-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    &-brand {
+      margin: 0;
+      margin-bottom: $size1;
+      font-size: 10px;
+    }
+
+    &-model {
+      margin: 0;
+      font-size: 12px;
+    }
+
+    &-price {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+
+      &-item {
+        margin: 0;
+      }
+    }
+  }
+}

@@ -1,0 +1,164 @@
+.cart {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  &__main-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  &__items {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+
+    @include respond-to(small) {
+      align-items: center;
+    }
+
+    &-item {
+      align-items: center;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 100%;
+      flex: 1 0 24%;
+      max-width: calc(25%);
+
+      @include respond-to(medium) {
+        justify-content: initial;
+        aspect-ratio: initial;
+        max-width: calc(50%);
+        flex: 1 0 49%;
+      }
+      @include respond-to(small) {
+        justify-content: initial;
+        aspect-ratio: initial;
+        max-width: 100%;
+        flex: 1 0 99%;
+      }
+
+      &-image {
+        width: 60%;
+
+        @include respond-to(small) {
+          width: initial;
+          height: $page-cart-phone-image-size-mobile;
+        }
+
+        img {
+          width: 100%;
+
+          @include respond-to(small) {
+            object-fit: cover;
+            max-height: $page-cart-phone-image-size-mobile;
+            width: initial;
+          }
+        }
+      }
+
+      &-specs {
+        margin-bottom: $size8;
+
+        @include respond-to(small) {
+          margin-bottom: $size10;
+        }
+      }
+
+      &-content {
+        height: 100%;
+        width: 40%;
+        padding-top: $size12;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        @include respond-to(small) {
+          padding-top: initial;
+        }
+      }
+
+      &-delete {
+        cursor: pointer;
+        margin-bottom: $size10;
+
+        @include respond-to(small) {
+          margin-top: $page-detail-button-height-desktop;
+          margin-bottom: initial;
+        }
+      }
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: $size6;
+    &.--desktop {
+      @include respond-to(small) {
+        display: none;
+      }
+    }
+
+    &.--mobile {
+      align-items: flex-start;
+      display: none;
+      justify-content: flex-start;
+
+      @include respond-to(small) {
+        display: flex;
+      }
+    }
+
+    @include respond-to(small) {
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    &-buttons {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+  &__purchase {
+    display: flex;
+    flex-direction: row;
+
+    &-text {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-right: $size6;
+
+      @include respond-to(small) {
+        margin-right: initial;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+      }
+
+      p {
+        height: min-content;
+      }
+    }
+
+    &-total {
+      margin-right: $size3;
+    }
+  }
+
+  &__button {
+    &-continue {
+      @include respond-to(small) {
+        margin-right: $size4;
+      }
+    }
+  }
+}

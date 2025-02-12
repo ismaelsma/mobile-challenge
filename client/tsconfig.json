@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "lib": ["dom", "esnext"],
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "types": ["node", "@types/jest", "@testing-library/jest-dom", "@types/node"]
+  },
+  "include": [
+    "src/**/*", // Incluye la carpeta de tus fuentes
+    "tests/**/*" // Asegúrate de que las pruebas estén incluidas aquí
+  ]
+}

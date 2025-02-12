@@ -1,0 +1,216 @@
+.phone-detail {
+  padding-bottom: $size13;
+  &__return {
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    margin-bottom: $size10;
+    max-width: min-content;
+
+    &-img {
+      font-weight: bold;
+      margin-right: $size2;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: row;
+    margin: 0 $page-detail-content-margin-desktop;
+    margin-bottom: $size14;
+
+    padding: $size10 0;
+
+    @include respond-to(medium) {
+      margin: 0;
+    }
+
+    @include respond-to(small) {
+      flex-direction: column;
+      margin: 0;
+      padding-top: 0;
+    }
+
+    &-image {
+      max-width: 50%;
+      max-height: 300px;
+      @include respond-to(medium) {
+        min-width: initial;
+      }
+
+      @include respond-to(small) {
+        align-self: center;
+        aspect-ratio: 1 / 1;
+        min-width: initial;
+      }
+
+      img {
+        height: 100%;
+
+        @include respond-to(small) {
+          width: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+
+    &-mainspecs {
+      padding-top: $size8;
+      padding-left: $page-mobile-specs-padding-desktop;
+      width: 380px;
+      min-width: max-content;
+
+      @include respond-to(medium) {
+        padding-left: $page-mobile-specs-padding-tablet;
+        width: initial;
+      }
+
+      @include respond-to(small) {
+        padding-left: initial;
+        width: initial;
+      }
+    }
+
+    &-titles {
+      margin-bottom: $size8;
+
+      &-name {
+        margin-bottom: $size4;
+      }
+    }
+
+    &-storage {
+      margin-bottom: $size6;
+
+      &-title {
+        margin-bottom: $size4;
+      }
+
+      &-options {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+      }
+
+      &-option {
+        background-color: initial;
+        border: 1px solid $main-color-grey;
+        cursor: pointer;
+        height: $page-detail-button-height-desktop;
+        width: $page-detail-button-width-desktop;
+
+        &:hover {
+          background-color: rgba($main-color-grey, 0.3);
+        }
+
+        &.--selected {
+          border-color: $main-color-black;
+        }
+
+        @include respond-to(medium) {
+          width: $page-detail-button-width-mobile;
+          height: $page-detail-button-height-mobile;
+        }
+
+        @include respond-to(small) {
+          width: $page-detail-button-width-mobile;
+          height: $page-detail-button-height-mobile;
+        }
+      }
+    }
+
+    &-color {
+      margin-bottom: $size6;
+
+      &-title {
+        margin-bottom: $size4;
+      }
+
+      &-options {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+      }
+
+      &-option {
+        border: 1px solid $main-color-grey;
+        cursor: pointer;
+        height: $size5;
+        margin-right: $size4;
+        position: relative;
+        width: $size5;
+
+        &.--selected {
+          border-color: $main-color-black;
+        }
+
+        &:after {
+          border: 1px solid $main-color-white;
+          content: '';
+          height: $size4;
+          left: 0px;
+          position: absolute;
+          top: 0px;
+          width: $size4;
+        }
+      }
+    }
+
+    &-add {
+      width: 100%;
+    }
+  }
+
+  &__specs {
+    margin: 0 $page-detail-content-margin-desktop;
+    margin-bottom: $page-margin-desktop;
+
+    @include respond-to(medium) {
+      margin: 0;
+      margin-bottom: $page-detail-similar-margin-top-mobile;
+    }
+
+    @include respond-to(small) {
+      margin: 0;
+      margin-bottom: $page-detail-similar-margin-top-mobile;
+    }
+
+    &-title {
+      margin-bottom: $size6;
+    }
+  }
+
+  &__similar {
+    margin: 0 $page-detail-content-margin-desktop;
+
+    @include respond-to(medium) {
+      margin: 0;
+    }
+
+    @include respond-to(small) {
+      flex-direction: column;
+      margin: 0;
+    }
+    &-title {
+      margin-bottom: $size6;
+    }
+
+    &-items {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      height: calc($page-detail-similar-card-width + $size4);
+      overflow-x: auto;
+      overflow-y: hidden;
+
+      scrollbar-width: thin;
+      scrollbar-color: #888 #f1f1f1;
+    }
+
+    &-item {
+      width: $page-detail-similar-card-width;
+      height: $page-detail-similar-card-width;
+    }
+  }
+}

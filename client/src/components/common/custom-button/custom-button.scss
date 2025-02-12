@@ -1,0 +1,25 @@
+.custom-button {
+  background-color: $main-color-black;
+  color: $main-color-white;
+  cursor: pointer;
+  height: $size14;
+  width: 100%;
+  min-width: $component-custom-button-min-width-desktop;
+
+  @include respond-to(small) {
+    min-width: initial;
+  }
+
+  &.--white {
+    background-color: $main-color-white;
+    border: 1px solid $main-color-black;
+    color: $main-color-black;
+  }
+
+  &.--disabled {
+    background-color: $main-color-soft-grey;
+    border: none;
+    color: $main-color-strong-grey;
+    cursor: not-allowed;
+  }
+}
