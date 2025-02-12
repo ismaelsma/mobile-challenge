@@ -1,4 +1,3 @@
-// Loader.tsx
 import { ICustomButtonProps } from './custom-button.types';
 
 const CustomButton = (props: ICustomButtonProps) => {

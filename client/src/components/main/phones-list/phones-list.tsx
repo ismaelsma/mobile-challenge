@@ -20,17 +20,15 @@ const PhonesList = () => {
   };
 
   useEffect(() => {
-    // Extraer el parámetro 'search' de la query string solo una vez cuando el componente se monta
     const queryParams = new URLSearchParams(location.search);
-    const query = queryParams.get('search'); // El parámetro 'search'
+    const query = queryParams.get('search');
 
     if (query) {
-      setSearch(query); // Establecer el valor de la búsqueda
+      setSearch(query);
     }
   }, []);
 
   useEffect(() => {
-    // This function will only be triggerred if user stops typing for 0.3 seconds
     const callTimeoutDelay = setTimeout(() => {
       navigate(
         `${RoutePaths.PHONE_LIST}${searchText ? `?search=${searchText}` : ''}`
@@ -38,7 +36,6 @@ const PhonesList = () => {
       fetchPhonesList(searchText);
     }, 300);
 
-    // This function cancels the timeout if the user retypes something before the timer is up
     return () => clearTimeout(callTimeoutDelay);
   }, [searchText]);
 

@@ -1,4 +1,3 @@
-// Loader.tsx
 import React, { useEffect, useState } from 'react';
 import { INotificationProps } from './notification.types';
 

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import MainPage from '../../../components/main/main-page/main-page'; // Ruta al archivo correcto
-import PhonesList from '../../../components/main/phones-list/phones-list'; // Ruta al componente PhonesList
+import MainPage from '../../../components/main/main-page/main-page';
+import PhonesList from '../../../components/main/phones-list/phones-list';
 
 // Mock phones-list to avoid rendering the whole component
 jest.mock('../../../components/main/phones-list/phones-list', () => {

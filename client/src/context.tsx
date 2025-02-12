@@ -19,17 +19,15 @@ const PhonesListContext = createContext<IPhoneListContext>({
   phonesList: [],
   prevSearch: '',
   loading: true,
-  fetchPhonesList: undefined, // Función vacía como valor inicial
+  fetchPhonesList: undefined,
   forceSetLoadingTrue: () => {}
 });
 
-// Proveedor del contexto
 export const PhonesListProvider = ({ children }) => {
   const [phonesList, setPhonesList] = useState<IPhoneListItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [prevSearch, setPrevSearch] = useState<string>('');
 
-  // Hacer una petición a la API (Node.js)
   const fetchPhonesList = async (searchText?: string) => {
     try {
       setLoading(true);
@@ -162,15 +160,13 @@ export const useCartItemsContext = () => useContext(CartItemsContext);
 const PhoneDetailContext = createContext<IPhoneDetailContext>({
   phoneDetail: new PhoneDetailModel(),
   loading: true,
-  fetchPhoneDetail: undefined // Función vacía como valor inicial
+  fetchPhoneDetail: undefined
 });
 
-// Proveedor del contexto
 export const PhoneDetailProvider = ({ children }) => {
   const [phoneDetail, setPhoneDetail] = useState(new PhoneDetailModel());
   const [loading, setLoading] = useState(false);
 
-  // Hacer una petición a la API (Node.js)
   const fetchPhoneDetail = async (phone: string) => {
     try {
       setLoading(true);

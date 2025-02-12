@@ -35,9 +35,8 @@ const PhoneDetail: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Extraer el parámetro 'search' de la query string solo una vez cuando el componente se monta
     const queryParams = new URLSearchParams(location.search);
-    const query = queryParams.get('phoneid'); // El parámetro 'search'
+    const query = queryParams.get('phoneid');
 
     if (query) {
       fetchPhoneDetail(query);
