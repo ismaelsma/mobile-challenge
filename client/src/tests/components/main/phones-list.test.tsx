@@ -1,217 +1,223 @@
-// phones-list.test.tsx
-import { act, render, screen, fireEvent, waitFor } from "@testing-library/react";
-import PhonesList from "../../../components/main/phones-list/phones-list";
-import { MemoryRouter, useNavigate } from "react-router-dom";
-import * as Context from "../../../context"; // Importamos todo el contexto
-import { mockPhones } from "../../mocks/components/main/phones-list.mocks";
+import {
+  act,
+  render,
+  screen,
+  fireEvent,
+  waitFor
+} from '@testing-library/react';
+import PhonesList from '../../../components/main/phones-list/phones-list';
+import { MemoryRouter, useNavigate } from 'react-router-dom';
+import * as Context from '../../../context';
+import { mockPhones } from '../../mocks/components/main/phones-list.mocks';
+import { RoutePaths } from '../../../types/routes.types';
 
-// Mock para el contexto
-jest.mock("../../../context", () => ({
-  ...jest.requireActual("../../../context"), // Mantiene los otros contextos sin modificar
-  usePhonesListContext: jest.fn(), // Mockeamos solo el hook específico
+jest.mock('../../../context', () => ({
+  ...jest.requireActual('../../../context'),
+  usePhonesListContext: jest.fn()
 }));
 
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useNavigate: jest.fn(),
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: jest.fn()
 }));
 
-describe("PhonesList", () => {
-  it("debe renderizar el loader cuando está cargando", () => {
-    // Mock del valor del contexto
+describe('PhonesList', () => {
+  test('should render the loader when loading', () => {
     const mockContextValue = {
       phonesList: [],
       loading: true,
       fetchPhonesList: jest.fn(),
-      prevSearch: "",
-      forceSetLoadingTrue: jest.fn(),
+      prevSearch: '',
+      forceSetLoadingTrue: jest.fn()
     };
 
-    // Mockeamos el hook
-    (Context.usePhonesListContext as jest.Mock).mockReturnValue(mockContextValue);
+    (Context.usePhonesListContext as jest.Mock).mockReturnValue(
+      mockContextValue
+    );
 
     render(
       <MemoryRouter>
         <PhonesList />
-      </MemoryRouter>,
+      </MemoryRouter>
     );
 
-    // Comprobar si el loader está siendo renderizado
-    expect(screen.getByTestId("loader")).toBeInTheDocument();
+    // Check that loader is rendered
+    expect(screen.getByTestId('loader')).toBeInTheDocument();
   });
 
-  it("debe mostrar la lista de teléfonos cuando no está cargando", async () => {
-    // Mock del valor del contexto
+  test('should display the phone list when not loading', async () => {
     const mockContextValue = {
       phonesList: mockPhones,
       loading: false,
       fetchPhonesList: jest.fn(),
-      prevSearch: "",
-      forceSetLoadingTrue: jest.fn(),
+      prevSearch: '',
+      forceSetLoadingTrue: jest.fn()
     };
 
-    // Mockeamos el hook
-    (Context.usePhonesListContext as jest.Mock).mockReturnValue(mockContextValue);
+    (Context.usePhonesListContext as jest.Mock).mockReturnValue(
+      mockContextValue
+    );
 
     render(
       <MemoryRouter>
         <PhonesList />
-      </MemoryRouter>,
+      </MemoryRouter>
     );
 
-    // Esperar a que los elementos estén disponibles
-    await waitFor(() => expect(screen.getByText("RESULTS: 2")).toBeInTheDocument());
+    // Check that page have the device results
+    await waitFor(() =>
+      expect(screen.getByText('RESULTS: 2')).toBeInTheDocument()
+    );
 
-    // Verificar que el nombre de los teléfonos está presente en la pantalla
-    expect(screen.getByText("iPhone 12")).toBeInTheDocument();
-    expect(screen.getByText("Samsung Galaxy S21")).toBeInTheDocument();
+    expect(screen.getByText('iPhone 12')).toBeInTheDocument();
+    expect(screen.getByText('Samsung Galaxy S21')).toBeInTheDocument();
   });
 
-  it("debe actualizar el valor de la búsqueda cuando se escriba en el input", () => {
-    // Mock del valor del contexto
+  test('should update the search value when typing in the input', () => {
     const mockContextValue = {
       phonesList: [],
       loading: false,
       fetchPhonesList: jest.fn(),
-      prevSearch: "",
-      forceSetLoadingTrue: jest.fn(),
+      prevSearch: '',
+      forceSetLoadingTrue: jest.fn()
     };
 
-    // Mockeamos el hook
-    (Context.usePhonesListContext as jest.Mock).mockReturnValue(mockContextValue);
+    (Context.usePhonesListContext as jest.Mock).mockReturnValue(
+      mockContextValue
+    );
 
     render(
       <MemoryRouter>
         <PhonesList />
-      </MemoryRouter>,
+      </MemoryRouter>
     );
 
-    // Simulamos la acción de escribir en el input
-    const input = screen.getByPlaceholderText("Search for an smartphone");
-    fireEvent.change(input, { target: { value: "iPhone" } });
+    const input = screen.getByTestId('phone-list-search-input');
+    fireEvent.change(input, { target: { value: 'iPhone' } });
 
-    // Verificar que el valor del input se actualiza
-    expect(input).toHaveValue("iPhone");
+    // Check that input value is successfully set
+    expect(input).toHaveValue('iPhone');
   });
 
-  it("debe ejecutar el bloque if cuando hay un parámetro de búsqueda en la URL", async () => {
+  test('should execute the if block when a search parameter is in the URL', async () => {
     const mockContextValue = {
       phonesList: [],
       loading: false,
       fetchPhonesList: jest.fn(),
-      prevSearch: "",
-      forceSetLoadingTrue: jest.fn(),
+      prevSearch: '',
+      forceSetLoadingTrue: jest.fn()
     };
 
-    // Mockeamos el hook
-    (Context.usePhonesListContext as jest.Mock).mockReturnValue(mockContextValue);
+    (Context.usePhonesListContext as jest.Mock).mockReturnValue(
+      mockContextValue
+    );
 
-    // Simulamos la URL con el parámetro 'search'
-    const searchQuery = "iphone";
+    const searchQuery = 'iphone';
     const mockLocation = {
-      search: `?search=${searchQuery}`,
+      search: `?search=${searchQuery}`
     };
 
-    // Renderizamos el componente dentro de un MemoryRouter con una URL personalizada
     await act(async () => {
       render(
-        <MemoryRouter initialEntries={[`/phone-list${mockLocation.search}`]}>
+        <MemoryRouter
+          initialEntries={[`${RoutePaths.PHONE_LIST}${mockLocation.search}`]}
+        >
           <PhonesList />
-        </MemoryRouter>,
+        </MemoryRouter>
       );
     });
+
+    const input = screen.getByTestId('phone-list-search-input');
+
+    // Check that fetchPhonesList is not called
+    expect(input).toHaveValue('iphone');
   });
 
-  it("debe disparar el setTimeout después de 300ms y ejecutar fetchPhonesList", async () => {
+  test('should trigger setTimeout after 300ms and execute fetchPhonesList', async () => {
     const mockContextValue = {
       phonesList: [],
       loading: false,
       fetchPhonesList: jest.fn(),
-      prevSearch: "",
-      forceSetLoadingTrue: jest.fn(),
+      prevSearch: '',
+      forceSetLoadingTrue: jest.fn()
     };
 
-    // Mock de useNavigate
     const mockNavigate = jest.fn();
     (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
 
-    // Mockeamos el hook
-    (Context.usePhonesListContext as jest.Mock).mockReturnValue(mockContextValue);
+    (Context.usePhonesListContext as jest.Mock).mockReturnValue(
+      mockContextValue
+    );
 
-    jest.useFakeTimers(); // Habilitamos los temporizadores falsos
+    jest.useFakeTimers();
 
-    // Renderizamos el componente
     await act(async () => {
       render(
-        <MemoryRouter initialEntries={["/phone-list"]}>
+        <MemoryRouter initialEntries={[RoutePaths.PHONE_LIST]}>
           <PhonesList />
-        </MemoryRouter>,
+        </MemoryRouter>
       );
     });
 
-    // Simulamos que el usuario escribe algo en el campo de búsqueda
-    const input = screen.getByPlaceholderText("Search for an smartphone");
-    fireEvent.change(input, { target: { value: "iphone" } });
+    const input = screen.getByPlaceholderText('Search for an smartphone');
+    fireEvent.change(input, { target: { value: 'iphone' } });
 
-    // Avanzamos el temporizador de 300ms
     jest.advanceTimersByTime(300);
 
-    // Verificamos que navigate fue llamado con la URL correcta
-    expect(mockNavigate).toHaveBeenCalledWith("/phone-list?search=iphone");
+    // Check redirection is successful and queryParam is correct
+    expect(mockNavigate).toHaveBeenCalledWith(
+      `${RoutePaths.PHONE_LIST}?search=iphone`
+    );
+    expect(mockContextValue.fetchPhonesList).toHaveBeenCalledWith('iphone');
 
-    // Verificamos que fetchPhonesList fue llamada con el texto de búsqueda
-    expect(mockContextValue.fetchPhonesList).toHaveBeenCalledWith("iphone");
-
-    // Limpiamos los temporizadores después del test
     jest.useRealTimers();
   });
 
-  it("debe disparar el setTimeout después de 300ms y ejecutar fetchPhonesList", async () => {
+  test('should trigger setTimeout after 300ms and execute fetchPhonesList with no value', async () => {
     const mockContextValue = {
       phonesList: [],
       loading: false,
       fetchPhonesList: jest.fn(),
-      prevSearch: "",
-      forceSetLoadingTrue: jest.fn(),
+      prevSearch: '',
+      forceSetLoadingTrue: jest.fn()
     };
 
-    // Mock de useNavigate
     const mockNavigate = jest.fn();
     (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
 
-    // Mockeamos el hook
-    (Context.usePhonesListContext as jest.Mock).mockReturnValue(mockContextValue);
+    (Context.usePhonesListContext as jest.Mock).mockReturnValue(
+      mockContextValue
+    );
 
-    jest.useFakeTimers(); // Habilitamos los temporizadores falsos
+    jest.useFakeTimers();
 
-    // Renderizamos el componente
     await act(async () => {
       render(
-        <MemoryRouter initialEntries={["/phone-list"]}>
+        <MemoryRouter initialEntries={[RoutePaths.PHONE_LIST]}>
           <PhonesList />
-        </MemoryRouter>,
+        </MemoryRouter>
       );
     });
 
-    // Simulamos que el usuario escribe algo en el campo de búsqueda
-    const input = screen.getByPlaceholderText("Search for an smartphone");
-    fireEvent.change(input, { target: { value: "iphone" } });
+    const input = screen.getByPlaceholderText('Search for an smartphone');
+    fireEvent.change(input, { target: { value: 'iphone' } });
 
-    // Avanzamos el temporizador de 300ms
     jest.advanceTimersByTime(300);
 
-    fireEvent.change(input, { target: { value: "" } });
+    fireEvent.change(input, { target: { value: '' } });
 
-    // Avanzamos el temporizador de 300ms
     jest.advanceTimersByTime(300);
 
-    // Verificamos que navigate fue llamado con la URL correcta
-    expect(mockNavigate).toHaveBeenCalledWith("/phone-list?search=iphone");
+    fireEvent.change(input, { target: { value: 'iphone' } });
 
-    // Verificamos que fetchPhonesList fue llamada con el texto de búsqueda
-    expect(mockContextValue.fetchPhonesList).toHaveBeenCalledWith("iphone");
+    jest.advanceTimersByTime(300);
 
-    // Limpiamos los temporizadores después del test
+    // Check redirection is successful and queryParam is correct
+    expect(mockNavigate).toHaveBeenCalledWith(
+      `${RoutePaths.PHONE_LIST}?search=iphone`
+    );
+    expect(mockContextValue.fetchPhonesList).toHaveBeenCalledWith('iphone');
+
     jest.useRealTimers();
   });
 });

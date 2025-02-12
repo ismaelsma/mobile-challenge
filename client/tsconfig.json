@@ -5,7 +5,7 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
-    "types": ["node", "@types/jest", "@testing-library/jest-dom"]
+    "types": ["node", "@types/jest", "@testing-library/jest-dom", "@types/node"]
   },
   "include": [
     "src/**/*", // Incluye la carpeta de tus fuentes

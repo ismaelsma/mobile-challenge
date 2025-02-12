@@ -1,10 +1,14 @@
 import {
   IPhoneColorOption,
   IPhoneSpecs,
-  IPhoneStorageOption
+  IPhoneStorageOption,
+  IServicePhoneSpecs
 } from '../../../types/phone.types';
 
 export const getMinorPrice = (options: IPhoneStorageOption[]) => {
+  if (options.length === 0) {
+    return 0;
+  }
   return options.reduce((min, option) => {
     return option.price < min.price ? option : min;
   })?.price;
@@ -17,7 +21,7 @@ export const checkContinueDisabled = (
   return !selectedColor.name || !selectedStorage.capacity;
 };
 
-export const parseKey = (key: string) => {
+const parseKey = (key: string) => {
   switch (key) {
     case 'screen':
       return 'SCREEN';
@@ -40,7 +44,7 @@ export const parseKey = (key: string) => {
   }
 };
 
-export const adaptSpecsToList = (specs: IPhoneSpecs) => {
+export const adaptSpecsToList = (specs: IServicePhoneSpecs) => {
   return Object.keys(specs).map((key) => {
     return {
       title: parseKey(key),

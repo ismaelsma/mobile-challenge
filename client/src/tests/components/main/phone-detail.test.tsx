@@ -1,26 +1,22 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import PhoneDetail from '../../../components/main/phone-detail/phone-detail'; // Asegúrate de usar la ruta correcta
+import PhoneDetail from '../../../components/main/phone-detail/phone-detail';
 import {
   BrowserRouter as Router,
   useLocation,
   useNavigate
-} from 'react-router-dom'; // Importamos useNavigate
-import * as Context from '../../../context'; // Importamos todo el contexto
-import {
-  IPhoneColorOption,
-  IPhoneStorageOption
-} from '../../../types/phone.types';
+} from 'react-router-dom';
+import * as Context from '../../../context';
+import { mockPhoneDetail } from '../../mocks/components/main/phone-detail.mocks';
+import { RoutePaths } from '../../../types/routes.types';
 
-// Mock de react-router-dom
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
-  useLocation: jest.fn(), // Mock de useLocation
-  useNavigate: jest.fn() // Mock de useNavigate
+  useLocation: jest.fn(),
+  useNavigate: jest.fn()
 }));
 
-// Mock para el contexto
 jest.mock('../../../context', () => ({
-  ...jest.requireActual('../../../context'), // Mantiene los otros contextos sin modificar
+  ...jest.requireActual('../../../context'),
   usePhoneDetailContext: jest.fn(),
   usePhonesListContext: jest.fn(),
   useCartItemsContext: jest.fn()
@@ -30,25 +26,9 @@ describe('PhoneDetail component', () => {
   const mockFetchPhoneDetail = jest.fn();
   const mockForceSetLoadingTrue = jest.fn();
   const mockAddItem = jest.fn();
-  const mockNavigate = jest.fn(); // Mock de la función navigate
-
-  const mockPhoneDetail = {
-    id: '1',
-    name: 'Phone X',
-    colorOptions: [
-      { hexCode: '#000000', name: 'Black', imageUrl: 'black-image.jpg' },
-      { hexCode: '#FFFFFF', name: 'White', imageUrl: 'white-image.jpg' }
-    ],
-    storageOptions: [
-      { capacity: '64GB', price: 100 },
-      { capacity: '128GB', price: 150 }
-    ],
-    similarProducts: [{ id: '2', name: 'Phone Y', imageUrl: 'phone-y.jpg' }],
-    specs: [{ title: 'Camera', value: '12MP' }]
-  };
+  const mockNavigate = jest.fn();
 
   beforeEach(() => {
-    // Mock de fetchPhoneDetail para simular una llamada asíncrona exitosa
     (Context.usePhoneDetailContext as jest.Mock).mockReturnValue({
       loading: false,
       phoneDetail: mockPhoneDetail,
@@ -64,20 +44,16 @@ describe('PhoneDetail component', () => {
       addItem: mockAddItem
     });
 
-    // Mock de useLocation para que siempre devuelva el query con phoneid
     (useLocation as jest.Mock).mockReturnValue({
       search: '?phoneid=1'
     });
 
-    // Mock de scrollTo para evitar el error
     window.scrollTo = jest.fn();
 
-    // Mock de useNavigate para que siempre devuelva la función mockeada
     (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
   });
 
   test('renders phone details when data is loaded', async () => {
-    // Mockeamos la llamada fetchPhoneDetail para que se ejecute de inmediato en los tests
     mockFetchPhoneDetail.mockResolvedValue(mockPhoneDetail);
 
     render(
@@ -86,16 +62,14 @@ describe('PhoneDetail component', () => {
       </Router>
     );
 
-    // Esperar a que el teléfono se renderice correctamente
+    // Check that all phone details are in the document
     await waitFor(() =>
       expect(screen.getByText('Phone X')).toBeInTheDocument()
     );
 
-    // Verificar que se renderizan las opciones de almacenamiento
     expect(screen.getByText('64GB')).toBeInTheDocument();
     expect(screen.getByText('128GB')).toBeInTheDocument();
 
-    // Verificar que se renderizan las opciones de color
     expect(screen.getByTitle('Black')).toBeInTheDocument();
     expect(screen.getByTitle('White')).toBeInTheDocument();
   });
@@ -107,18 +81,17 @@ describe('PhoneDetail component', () => {
       </Router>
     );
 
-    // Simula la selección de color y almacenamiento
     fireEvent.click(screen.getByTitle('Black'));
     fireEvent.click(screen.getByText('64GB'));
 
-    // Verificar si el botón "ADD" está habilitado
     const addButton = screen.getByText('ADD');
+
+    // Check that addButton is enabled
     expect(addButton).not.toBeDisabled();
 
-    // Simular un clic en el botón "ADD"
     fireEvent.click(addButton);
 
-    // Verificar que addItem haya sido llamado
+    // Check that mockAddItem is called once
     expect(mockAddItem).toHaveBeenCalledTimes(1);
   });
 
@@ -129,31 +102,87 @@ describe('PhoneDetail component', () => {
       </Router>
     );
 
-    // Simular un clic en el botón de "BACK"
-    fireEvent.click(screen.getByText('BACK'));
+    fireEvent.click(screen.getByTestId('back-button'));
 
-    // Verificar que forceSetLoadingTrue haya sido llamado
+    // Check that redirect is triggered and phone-list URL called
     expect(mockForceSetLoadingTrue).toHaveBeenCalledTimes(1);
-
-    // Verificar que navigate haya sido llamado con la URL correcta
-    expect(mockNavigate).toHaveBeenCalledWith('/phone-list?search=Phone X');
+    expect(mockNavigate).toHaveBeenCalledWith(
+      `${RoutePaths.PHONE_LIST}?search=Phone X`
+    );
   });
   test('navigates to /phone-list when there is no phoneid in the URL', async () => {
-    // Mock de useLocation para simular una URL sin el query 'phoneid'
     (useLocation as jest.Mock).mockReturnValue({
-      search: '' // No hay query string con phoneid
+      search: ''
     });
 
-    // Simulamos la navegación para que se active el código que hace navigate('/phone-list')
     render(
       <Router>
         <PhoneDetail />
       </Router>
     );
 
-    // Esperamos que navigate haya sido llamado con '/phone-list'
+    // Check that phone-list URL is called
     await waitFor(() =>
-      expect(mockNavigate).toHaveBeenCalledWith('/phone-list')
+      expect(mockNavigate).toHaveBeenCalledWith(RoutePaths.PHONE_LIST)
+    );
+  });
+
+  test('displays loading spinner when loading is true', async () => {
+    (Context.usePhoneDetailContext as jest.Mock).mockReturnValue({
+      loading: true,
+      phoneDetail: {},
+      fetchPhoneDetail: mockFetchPhoneDetail
+    });
+
+    render(
+      <Router>
+        <PhoneDetail />
+      </Router>
+    );
+
+    // Check that loader is triggered once API is called
+    await waitFor(() =>
+      expect(screen.getByTestId('loader')).toBeInTheDocument()
+    );
+  });
+
+  test('does not render phone details if phoneDetail is missing', async () => {
+    (Context.usePhoneDetailContext as jest.Mock).mockReturnValue({
+      loading: false,
+      phoneDetail: {},
+      fetchPhoneDetail: mockFetchPhoneDetail
+    });
+
+    render(
+      <Router>
+        <PhoneDetail />
+      </Router>
+    );
+
+    // Check that phone info is not in the document and loader in the screen
+    await waitFor(() =>
+      expect(screen.queryByText('Phone X')).not.toBeInTheDocument()
+    );
+
+    expect(screen.getByTestId('loader')).toBeInTheDocument();
+  });
+
+  test('calls navigate with prevSearch query when prevSearch is defined', async () => {
+    (Context.usePhonesListContext as jest.Mock).mockReturnValue({
+      forceSetLoadingTrue: mockForceSetLoadingTrue
+    });
+
+    render(
+      <Router>
+        <PhoneDetail />
+      </Router>
+    );
+
+    fireEvent.click(screen.getByTestId('back-button'));
+
+    // Check that URL is changed when triggered click event to back button
+    expect(mockNavigate).toHaveBeenCalledWith(
+      `${RoutePaths.PHONE_LIST}?search=Phone X`
     );
   });
 });

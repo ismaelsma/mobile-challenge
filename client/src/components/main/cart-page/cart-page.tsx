@@ -3,6 +3,7 @@ import CustomButton from '../../common/custom-button/custom-button';
 import { useNavigate } from 'react-router-dom';
 import Notification from '../../common/notification/notification';
 import { useState } from 'react';
+import { RoutePaths } from '../../../types/routes.types';
 
 const CartPage = () => {
   const { cartItems, deleteItem, deleteAll } = useCartItemsContext();
@@ -12,7 +13,7 @@ const CartPage = () => {
 
   const handleContinueShopping = () => {
     forceSetLoadingTrue();
-    navigate('/phone-list');
+    navigate(RoutePaths.PHONE_LIST);
   };
 
   const handleBuy = () => {
@@ -68,7 +69,10 @@ const CartPage = () => {
                       deleteItem(index);
                     }}
                   >
-                    <p className="cart__items-item-delete-text --red-text">
+                    <p
+                      className="cart__items-item-delete-text --red-text"
+                      data-testid="delete-button"
+                    >
                       DELETE
                     </p>
                   </div>
@@ -77,29 +81,60 @@ const CartPage = () => {
             ))}
           </div>
           {cartItems.length > 0 && (
-            <div className="cart__buttons">
-              <div className="cart__button-continue">
-                <CustomButton
-                  onButtonPressed={handleContinueShopping}
-                  type="white"
-                  text="CONTINUE SHOPPING"
-                  disabled={false}
-                />
+            <>
+              <div className="cart__buttons --desktop">
+                <div className="cart__button-continue">
+                  <CustomButton
+                    onButtonPressed={handleContinueShopping}
+                    type="white"
+                    text="CONTINUE SHOPPING"
+                    disabled={false}
+                    testId="continue-shopping-button"
+                  />
+                </div>
+                <div className="cart__purchase">
+                  <div className="cart__purchase-text">
+                    <p className="cart__purchase-total">TOTAL</p>
+                    <p className="cart__purchase-price">
+                      {getTotalPrice()} EUR
+                    </p>
+                  </div>
+                  <div className="cart__purchase-button">
+                    <CustomButton
+                      onButtonPressed={handleBuy}
+                      text="PAY"
+                      disabled={false}
+                      testId="pay-button"
+                    />
+                  </div>
+                </div>
               </div>
-              <div className="cart__purchase">
+              <div className="cart__buttons --mobile">
                 <div className="cart__purchase-text">
                   <p className="cart__purchase-total">TOTAL</p>
                   <p className="cart__purchase-price">{getTotalPrice()} EUR</p>
                 </div>
-                <div className="cart__purchase-button">
-                  <CustomButton
-                    onButtonPressed={handleBuy}
-                    text="PAY"
-                    disabled={false}
-                  />
+                <div className="cart__buttons-buttons">
+                  <div className="cart__button-continue">
+                    <CustomButton
+                      onButtonPressed={handleContinueShopping}
+                      type="white"
+                      text="CONTINUE SHOPPING"
+                      disabled={false}
+                      testId="continue-shopping-button-mobile"
+                    />
+                  </div>
+                  <div className="cart__purchase-button">
+                    <CustomButton
+                      onButtonPressed={handleBuy}
+                      text="PAY"
+                      disabled={false}
+                      testId="pay-button-mobile"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
+            </>
           )}
         </div>
       )}

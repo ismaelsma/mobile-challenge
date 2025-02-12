@@ -6,7 +6,6 @@ import {
   PhoneDetailProvider,
   PhonesListProvider
 } from './context';
-import React from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -15,6 +14,7 @@ import {
 } from 'react-router-dom';
 import PhoneDetail from './components/main/phone-detail/phone-detail';
 import CartPage from './components/main/cart-page/cart-page';
+import { RoutePaths } from './types/routes.types';
 
 const App = () => {
   return (
@@ -30,25 +30,29 @@ const App = () => {
                 <Routes>
                   <Route
                     key="not-found"
-                    path="*"
-                    element={<Navigate to="/phone-list" replace />}
+                    path={RoutePaths.NOT_FOUND}
+                    element={<Navigate to={RoutePaths.PHONE_LIST} replace />}
                   />
                   <Route
                     key="default"
-                    path="/?"
-                    element={<Navigate to="/phone-list" replace />}
+                    path={RoutePaths.DEFAULT}
+                    element={<Navigate to={RoutePaths.PHONE_LIST} replace />}
                   />
                   <Route
                     key="phone-list"
-                    path="/phone-list"
+                    path={RoutePaths.PHONE_LIST}
                     element={<MainPage />}
                   />
                   <Route
                     key="phone-detail"
-                    path="/phone-detail"
+                    path={RoutePaths.PHONE_DETAIL}
                     element={<PhoneDetail />}
                   />
-                  <Route key="cart" path="/cart" element={<CartPage />} />
+                  <Route
+                    key="cart"
+                    path={RoutePaths.CART}
+                    element={<CartPage />}
+                  />
                 </Routes>
               </div>
             </Router>

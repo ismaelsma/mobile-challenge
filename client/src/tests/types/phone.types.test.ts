@@ -5,7 +5,7 @@ import {
   IPhoneColorOption,
   IPhoneStorageOption,
   IPhoneListItem
-} from '../../types/phone.types'; // Ajusta la ruta según la estructura de tu proyecto
+} from '../../types/phone.types';
 import {
   colorOptionsMock,
   fullPhoneSpecs,
@@ -20,8 +20,8 @@ describe('PhoneDetailModel', () => {
     phoneDetail = new PhoneDetailModel();
   });
 
-  it('should initialize with default values', () => {
-    // Verificar los valores predeterminados del modelo
+  test('should initialize with default values', () => {
+    //Check default values
     expect(phoneDetail.id).toBe('');
     expect(phoneDetail.brand).toBe('');
     expect(phoneDetail.name).toBe('');
@@ -29,18 +29,15 @@ describe('PhoneDetailModel', () => {
     expect(phoneDetail.basePrice).toBe(0);
     expect(phoneDetail.rating).toBe(0);
 
-    // Verificar que `specs` está correctamente inicializado
     const defaultSpecs: IPhoneSpecs[] = [];
     expect(phoneDetail.specs).toEqual(defaultSpecs);
 
-    // Verificar que `colorOptions`, `storageOptions` y `similarProducts` estén vacíos
     expect(phoneDetail.colorOptions).toEqual([]);
     expect(phoneDetail.storageOptions).toEqual([]);
     expect(phoneDetail.similarProducts).toEqual([]);
   });
 
-  it('should allow setting values for properties', () => {
-    // Modificar las propiedades del modelo
+  test('should allow setting values for properties', () => {
     phoneDetail.id = '12345';
     phoneDetail.brand = 'Apple';
     phoneDetail.name = 'iPhone 13';
@@ -64,7 +61,7 @@ describe('PhoneDetailModel', () => {
 
     phoneDetail.similarProducts = similarProducts;
 
-    // Verificar que los valores se hayan actualizado correctamente
+    // Check all values are updated
     expect(phoneDetail.id).toBe('12345');
     expect(phoneDetail.brand).toBe('Apple');
     expect(phoneDetail.name).toBe('iPhone 13');
@@ -78,9 +75,10 @@ describe('PhoneDetailModel', () => {
     expect(phoneDetail.similarProducts).toEqual(similarProducts);
   });
 
-  it('should correctly initialize with the constructor', () => {
+  test('should correctly initialize with the constructor', () => {
     const phoneDetail = new PhoneDetailModel();
 
+    // Check constructor data
     expect(phoneDetail).toBeInstanceOf(PhoneDetailModel);
     expect(phoneDetail.specs).toStrictEqual([]);
     expect(phoneDetail.colorOptions).toEqual([]);

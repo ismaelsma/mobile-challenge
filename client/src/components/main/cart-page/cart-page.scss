@@ -1,7 +1,8 @@
 .cart {
   display: flex;
   flex-direction: column;
-  padding-bottom: $size13;
+  height: 100%;
+
   &__main-container {
     height: 100%;
     display: flex;
@@ -97,6 +98,33 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    padding-bottom: $size6;
+    &.--desktop {
+      @include respond-to(small) {
+        display: none;
+      }
+    }
+
+    &.--mobile {
+      align-items: flex-start;
+      display: none;
+      justify-content: flex-start;
+
+      @include respond-to(small) {
+        display: flex;
+      }
+    }
+
+    @include respond-to(small) {
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    &-buttons {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
   }
 
   &__purchase {
@@ -107,7 +135,14 @@
       display: flex;
       flex-direction: row;
       align-items: center;
-      margin-right: $size10;
+      margin-right: $size6;
+
+      @include respond-to(small) {
+        margin-right: initial;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+      }
 
       p {
         height: min-content;
@@ -116,6 +151,14 @@
 
     &-total {
       margin-right: $size3;
+    }
+  }
+
+  &__button {
+    &-continue {
+      @include respond-to(small) {
+        margin-right: $size4;
+      }
     }
   }
 }

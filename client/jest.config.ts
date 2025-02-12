@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   collectCoverage: true,
   collectCoverageFrom: ["src/**/*.{ts,tsx}", "!src/**/*.d.ts", "!**/vendor/**"],
   coverageDirectory: "coverage",
@@ -8,7 +8,10 @@ module.exports = {
   },
   preset: "ts-jest",
   setupFilesAfterEnv: ["./jest.setup.ts"],
-
+  testMatch: [
+    "<rootDir>/src/tests/**/*.test.tsx",
+    "<rootDir>/src/tests/**/*.test.ts",
+  ],
   coveragePathIgnorePatterns: [
     "/node_modules/",
     "/coverage",
@@ -18,4 +21,7 @@ module.exports = {
     "setupTests.ts",
     "index.tsx",
   ],
+  moduleNameMapper: {
+    "\\.scss$": "<rootDir>/src/tests/mocks/styleMocks.js",
+  },
 };

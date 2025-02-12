@@ -11,14 +11,11 @@ import {
   IPhoneStorageOption
 } from '../../../types/phone.types';
 import VerticalList from '../../common/vertical-list/vertical-list';
-import {
-  adaptSpecsToList,
-  checkContinueDisabled,
-  getMinorPrice
-} from './phone-detail.functions';
+import { checkContinueDisabled, getMinorPrice } from './phone-detail.functions';
 import PhoneItem from '../phone-item/phone-item';
 import Notification from '../../common/notification/notification';
 import CustomButton from '../../common/custom-button/custom-button';
+import { RoutePaths } from '../../../types/routes.types';
 
 const PhoneDetail: React.FC = () => {
   const { loading, phoneDetail, fetchPhoneDetail } = usePhoneDetailContext();
@@ -46,7 +43,7 @@ const PhoneDetail: React.FC = () => {
       fetchPhoneDetail(query);
       window.scrollTo(0, 0);
     } else {
-      navigate(`/phone-list`);
+      navigate(RoutePaths.PHONE_LIST);
     }
   }, [location]);
 
@@ -57,7 +54,7 @@ const PhoneDetail: React.FC = () => {
   }, [loading]);
 
   const goBackAction = () => {
-    const navigateUrl = `/phone-list${prevSearch ? `?search=${prevSearch}` : ''}`;
+    const navigateUrl = `${RoutePaths.PHONE_LIST}${prevSearch ? `?search=${prevSearch}` : ''}`;
     forceSetLoadingTrue();
     navigate(navigateUrl);
   };
@@ -74,7 +71,9 @@ const PhoneDetail: React.FC = () => {
           alt="Go back logo"
           className="phone-detail__return-img back-arrow-img"
         />
-        <p className="phone-detail__return-text">BACK</p>
+        <p className="phone-detail__return-text" data-testid="back-button">
+          BACK
+        </p>
       </div>
       {loading || !phoneDetail.id ? (
         <Loader />

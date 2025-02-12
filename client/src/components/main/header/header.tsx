@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useCartItemsContext, usePhonesListContext } from '../../../context';
 import { ICartItemsModel } from '../../../types/cart.types';
+import { RoutePaths } from '../../../types/routes.types';
 
 const Header = () => {
   const { cartItems } = useCartItemsContext();
@@ -9,11 +10,11 @@ const Header = () => {
 
   const mainMenu = () => {
     forceSetLoadingTrue();
-    navigate('/phone-list');
+    navigate(RoutePaths.PHONE_LIST);
   };
 
   const displayCart = () => {
-    navigate('/cart');
+    navigate(RoutePaths.CART);
   };
 
   const getCartItemsNumber = (cartItems: ICartItemsModel[]) => {
@@ -21,7 +22,7 @@ const Header = () => {
   };
 
   return (
-    <div className="header">
+    <header className="header" role="banner">
       <div className="header__items">
         <div className="header__logo-container">
           <img
@@ -29,6 +30,7 @@ const Header = () => {
             alt="MBST logo"
             className="header__logo-img"
             onClick={mainMenu}
+            data-testid="header-logo"
           />
         </div>
         <div className="header__cart-container" onClick={displayCart}>
@@ -40,7 +42,7 @@ const Header = () => {
           <p className="header__cart-count">{getCartItemsNumber(cartItems)}</p>
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 

@@ -4,6 +4,7 @@ import InputText from '../../common/input-text/input-text';
 import PhoneItem from '../phone-item/phone-item';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Loader from '../../common/loader/loader';
+import { RoutePaths } from '../../../types/routes.types';
 
 const PhonesList = () => {
   const { fetchPhonesList } = usePhonesListContext();
@@ -31,7 +32,9 @@ const PhonesList = () => {
   useEffect(() => {
     // This function will only be triggerred if user stops typing for 0.3 seconds
     const callTimeoutDelay = setTimeout(() => {
-      navigate(`/phone-list${searchText ? `?search=${searchText}` : ''}`);
+      navigate(
+        `${RoutePaths.PHONE_LIST}${searchText ? `?search=${searchText}` : ''}`
+      );
       fetchPhonesList(searchText);
     }, 300);
 
@@ -53,6 +56,7 @@ const PhonesList = () => {
               value={searchText}
               onChange={setSearch}
               placeholder={'Search for an smartphone'}
+              testId="phone-list-search-input"
             ></InputText>
           </div>
           <div className="phones-list__results">

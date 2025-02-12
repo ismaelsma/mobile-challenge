@@ -60,17 +60,18 @@ describe('PhonesListContext', () => {
         <PhonesListConsumer />
       </PhonesListProvider>
     );
-
+    // Check that loading is in the document
     expect(screen.getByText('Loading...')).toBeInTheDocument();
 
+    // Check that, after load, listItem and phone info is in the document
     await waitFor(() =>
       expect(screen.getAllByRole('listitem')).toHaveLength(3)
     );
-
     expect(screen.getByText('Phone 1')).toBeInTheDocument();
     expect(screen.getByText('Phone 2')).toBeInTheDocument();
     expect(screen.getByText('Phone 3')).toBeInTheDocument();
 
+    // Check that phonelist route is called
     expect(fetch).toHaveBeenCalledWith('http://localhost:3001/phonelist');
   });
 
@@ -91,6 +92,7 @@ describe('PhonesListContext', () => {
     expect(screen.getByText('Phone 2')).toBeInTheDocument();
     expect(screen.getByText('Phone 3')).toBeInTheDocument();
 
+    // Check that phonelist route is triggered with search text
     expect(fetch).toHaveBeenCalledWith(
       'http://localhost:3001/phonelist?search=text'
     );
@@ -113,6 +115,7 @@ describe('PhonesListContext', () => {
       </PhonesListProvider>
     );
 
+    // Check that loading is in the document
     expect(screen.getByText('Loading...')).toBeInTheDocument();
   });
 
@@ -131,6 +134,7 @@ describe('PhonesListContext', () => {
       </PhonesListProvider>
     );
 
+    // Check service error
     await waitFor(() => {
       expect(consoleErrorMock).toHaveBeenCalledWith(
         'Error fetching phones list:',
@@ -142,7 +146,6 @@ describe('PhonesListContext', () => {
   });
 });
 
-// Componente para consumir el contexto
 const CartItemsConsumer = () => {
   const { cartItems, addItem, deleteItem, deleteAll } = useCartItemsContext();
 
@@ -168,9 +171,8 @@ const CartItemsConsumer = () => {
 
 describe('CartItemsContext', () => {
   beforeAll(() => {
-    // Mock de localStorage
     Storage.prototype.setItem = jest.fn();
-    Storage.prototype.getItem = jest.fn(() => JSON.stringify([])); // Empezamos con un carrito vacío
+    Storage.prototype.getItem = jest.fn(() => JSON.stringify([]));
   });
 
   afterAll(() => {
@@ -187,11 +189,15 @@ describe('CartItemsContext', () => {
     const addButton = screen.getByText('Add Item');
     fireEvent.click(addButton);
 
+    // Check that listitem is in the document
     await waitFor(() =>
       expect(screen.getByRole('listitem')).toBeInTheDocument()
     );
 
+    // Check that phone is in the document
     expect(screen.getByText('Phone 1')).toBeInTheDocument();
+
+    // Check that localStorage is updated
     expect(localStorage.setItem).toHaveBeenCalledWith(
       'mobile-challenge:cart-items',
       JSON.stringify(cartListDataFullOneItem)
@@ -199,7 +205,6 @@ describe('CartItemsContext', () => {
   });
 
   test('should increment item quantity if already in the cart', async () => {
-    // Inicializamos con un artículo en el carrito
     Storage.prototype.getItem = jest.fn(() =>
       JSON.stringify(cartListDataOneItem)
     );
@@ -213,11 +218,13 @@ describe('CartItemsContext', () => {
     const addButton = screen.getByText('Add Item');
     fireEvent.click(addButton);
 
+    // Check that phone info is loaded in the document
     await waitFor(() =>
       expect(screen.getByRole('listitem')).toBeInTheDocument()
     );
-
     expect(screen.getByText('Phone 1')).toBeInTheDocument();
+
+    // Check that localStorage is updated
     expect(localStorage.setItem).toHaveBeenCalledWith(
       'mobile-challenge:cart-items',
       JSON.stringify(cartListDataTwoQuantity)
@@ -225,7 +232,6 @@ describe('CartItemsContext', () => {
   });
 
   test('should delete item from the cart', async () => {
-    // Inicializamos con un artículo en el carrito
     Storage.prototype.getItem = jest.fn(() =>
       JSON.stringify(cartListDataOneItem)
     );
@@ -241,6 +247,7 @@ describe('CartItemsContext', () => {
 
     await waitFor(() => expect(screen.queryByRole('listitem')).toBeNull());
 
+    // Check that localStorage is updated
     expect(localStorage.setItem).toHaveBeenCalledWith(
       'mobile-challenge:cart-items',
       JSON.stringify([])
@@ -248,7 +255,6 @@ describe('CartItemsContext', () => {
   });
 
   test('should delete all items from the cart', async () => {
-    // Inicializamos con dos artículos en el carrito
     Storage.prototype.getItem = jest.fn(() =>
       JSON.stringify(cartListDataTwoItems)
     );
@@ -266,6 +272,7 @@ describe('CartItemsContext', () => {
       expect(screen.queryAllByRole('listitem')).toHaveLength(0)
     );
 
+    // Check that localStorage is updated
     expect(localStorage.setItem).toHaveBeenCalledWith(
       'mobile-challenge:cart-items',
       JSON.stringify([])
@@ -289,7 +296,6 @@ const PhoneDetailConsumer = ({ searchText }: { searchText?: string }) => {
 };
 
 describe('PhoneDetailContext', () => {
-  // Prueba básica de contexto y estado inicial
   test('should provide context and update phone details', async () => {
     render(
       <PhoneDetailProvider>
@@ -297,10 +303,8 @@ describe('PhoneDetailContext', () => {
       </PhoneDetailProvider>
     );
 
-    // Verifica que se muestre el estado de carga inicialmente
+    // Check loading is triggered
     expect(screen.getByText('Loading...')).toBeInTheDocument();
-
-    // Espera a que los datos se carguen
     await waitFor(() => expect(screen.getByText('Loaded')).toBeInTheDocument());
   });
 
@@ -311,18 +315,16 @@ describe('PhoneDetailContext', () => {
       </PhoneDetailProvider>
     );
 
-    // Verifica que se muestre el estado de carga inicialmente
     expect(screen.getByText('Loading...')).toBeInTheDocument();
 
-    // Espera a que los datos se carguen
     await waitFor(() => expect(screen.getByText('Loaded')).toBeInTheDocument());
 
+    // Check phonelist route is called with detail queryParam
     expect(fetch).toHaveBeenCalledWith(
       'http://localhost:3001/phonelist?detail=1'
     );
   });
 
-  // Prueba de la llamada a la API y actualización de datos
   test('should call fetchPhoneDetail and update state with phone details', async () => {
     global.fetch = jest.fn().mockResolvedValue({
       json: jest.fn().mockResolvedValue(fetchPhoneDetailMock)
@@ -334,26 +336,21 @@ describe('PhoneDetailContext', () => {
       </PhoneDetailProvider>
     );
 
-    // Verifica el estado de carga
     expect(screen.getByText('Loading...')).toBeInTheDocument();
 
-    // Espera a que los detalles del teléfono se carguen y verifica el nombre del teléfono
     await waitFor(() =>
       expect(screen.getByText('Phone 1')).toBeInTheDocument()
     );
 
-    // Verifica que la función fetch haya sido llamada con la URL correcta
+    // Check phonelist route is called
     expect(fetch).toHaveBeenCalledWith('http://localhost:3001/phonelist');
   });
 
-  // Prueba de manejo de errores
   test('should handle error when fetch fails', async () => {
-    // Simula una falla en la solicitud fetch
     global.fetch = jest
       .fn()
       .mockRejectedValueOnce(new Error('Failed to fetch'));
 
-    // Mock de console.error para verificar si se maneja el error
     const consoleErrorMock = jest
       .spyOn(console, 'error')
       .mockImplementation(() => {});
@@ -364,20 +361,16 @@ describe('PhoneDetailContext', () => {
       </PhoneDetailProvider>
     );
 
-    // Espera a que el estado cambie después de la solicitud
     await waitFor(() => expect(screen.getByText('Loaded')).toBeInTheDocument());
 
-    // Verifica que se haya registrado el error en la consola
     expect(consoleErrorMock).toHaveBeenCalledWith(
       'Error fetching phone detail:',
       expect.any(Error)
     );
 
-    // Restauramos el mock de console.error
     consoleErrorMock.mockRestore();
   });
 
-  // Prueba de estado `loading`
   test('should update loading state during fetch process', async () => {
     global.fetch = jest.fn().mockResolvedValue({
       json: jest.fn().mockResolvedValue(fetchPhoneDetailEmptyMock)
@@ -389,15 +382,12 @@ describe('PhoneDetailContext', () => {
       </PhoneDetailProvider>
     );
 
-    // Verifica el estado de carga inicialmente
     expect(screen.getByText('Loading...')).toBeInTheDocument();
 
-    // Espera a que el estado de carga termine y que el nombre del teléfono se muestre
     await waitFor(() =>
       expect(screen.getByText('Phone 1')).toBeInTheDocument()
     );
 
-    // Verifica que el estado de carga haya cambiado
     expect(screen.getByText('Loaded')).toBeInTheDocument();
   });
 });

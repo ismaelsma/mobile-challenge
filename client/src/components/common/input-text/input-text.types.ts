@@ -8,4 +8,5 @@ export interface IInputTextProps {
   id: string;
   className: string;
   required?: boolean;
+  testId?: string;
 }

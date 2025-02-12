@@ -2,7 +2,7 @@
 import { ICustomButtonProps } from './custom-button.types';
 
 const CustomButton = (props: ICustomButtonProps) => {
-  const { text, disabled, onButtonPressed, type = 'black' } = props;
+  const { text, disabled, onButtonPressed, testId, type = 'black' } = props;
 
   return (
     <button
@@ -11,6 +11,7 @@ const CustomButton = (props: ICustomButtonProps) => {
         onButtonPressed();
       }}
       disabled={disabled}
+      data-testid={testId}
     >
       {text}
     </button>

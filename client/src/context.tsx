@@ -184,7 +184,7 @@ export const PhoneDetailProvider = ({ children }) => {
               index === self.findIndex((t) => t.id === item.id)
           )
         : [];
-      const parsedSpecs = data.specs?.os ? adaptSpecsToList(data.specs) : [];
+      const parsedSpecs = data.specs ? adaptSpecsToList(data.specs) : [];
       setPhoneDetail({
         ...data,
         similarProducts: uniqueSimilarProducts,

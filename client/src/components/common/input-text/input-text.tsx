@@ -2,7 +2,16 @@ import React from 'react';
 import { IInputTextProps } from './input-text.types';
 
 const InputText: React.FC<IInputTextProps> = (props: IInputTextProps) => {
-  const { value, onChange, placeholder, required, id, className, name } = props;
+  const {
+    value,
+    onChange,
+    placeholder,
+    required,
+    id,
+    className,
+    name,
+    testId
+  } = props;
 
   return (
     <input
@@ -16,6 +25,7 @@ const InputText: React.FC<IInputTextProps> = (props: IInputTextProps) => {
       placeholder={placeholder}
       required={Boolean(required)}
       id={id}
+      data-testid={testId}
     />
   );
 };

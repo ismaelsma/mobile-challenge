@@ -1,12 +1,13 @@
 import { IPhoneListItem } from '../../../types/phone.types';
 import { useNavigate } from 'react-router-dom';
+import { RoutePaths } from '../../../types/routes.types';
 
 const PhoneItem = (props: IPhoneListItem & { fixWidth?: boolean }) => {
   const { id, name, brand, basePrice, imageUrl, fixWidth } = props;
   const navigate = useNavigate();
 
   const getPhoneLink = (phoneId: string) => {
-    navigate(`/phone-detail?phoneid=${phoneId}`);
+    navigate(`${RoutePaths.PHONE_DETAIL}?phoneid=${phoneId}`);
   };
 
   return (

@@ -6,6 +6,18 @@ export interface IPhoneListItem {
   imageUrl: string;
 }
 
+export interface IServicePhoneSpecs {
+  screen: string;
+  resolution: string;
+  processor: string;
+  mainCamera: string;
+  selfieCamera: string;
+  battery: string;
+  os: string;
+  screenRefreshRate: string;
+  unknown?: string;
+}
+
 export interface IPhoneSpecs {
   title: string;
   value: string;
