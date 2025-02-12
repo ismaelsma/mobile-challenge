@@ -23,6 +23,12 @@ export const checkContinueDisabled = (
 
 const parseKey = (key: string) => {
   switch (key) {
+    case 'brand':
+      return 'BRAND';
+    case 'model':
+      return 'MODEL';
+    case 'description':
+      return 'DESCRIPTION';
     case 'screen':
       return 'SCREEN';
     case 'resolution':
@@ -44,11 +50,15 @@ const parseKey = (key: string) => {
   }
 };
 
-export const adaptSpecsToList = (specs: IServicePhoneSpecs) => {
-  return Object.keys(specs).map((key) => {
-    return {
-      title: parseKey(key),
-      value: specs[key]
-    };
+export const adaptSpecsToList = (specs: IServicePhoneSpecs[]) => {
+  const returnObject: IPhoneSpecs[] = [];
+  specs.forEach((spec, index) => {
+    Object.keys(spec).forEach((key) => {
+      returnObject.push({
+        title: parseKey(key),
+        value: specs[index][key]
+      });
+    });
   });
+  return returnObject;
 };

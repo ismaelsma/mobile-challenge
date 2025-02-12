@@ -15,7 +15,7 @@ export interface IServicePhoneSpecs {
   battery: string;
   os: string;
   screenRefreshRate: string;
-  unknown?: string;
+  [key: string]: string;
 }
 
 export interface IPhoneSpecs {
