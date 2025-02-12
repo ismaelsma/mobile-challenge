@@ -14,7 +14,7 @@ import {
 
 describe('adaptSpecsToList function', () => {
   test('should adapt specs correctly', () => {
-    const adaptedList = adaptSpecsToList(mockFunctionsSpecs);
+    const adaptedList = adaptSpecsToList([mockFunctionsSpecs]);
     expect(adaptedList).toEqual(mockFunctionsSpecsParsed);
   });
 });
