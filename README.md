@@ -60,14 +60,14 @@ To run the project locally, follow these steps:
 
 ## Folder structure
 
--server
-Contains Node Backend server
+    ./server
+    Contains Node Backend server
 
--client
-Contains React Frontal server
+    ./client
+      Contains React Frontal server
 
---client/src/components
-Components created in the app. It's divided in:
+    ./client/src/components
+      Components created in the app. It's divided in:
 
     ./components/main
       Core components of the app
@@ -75,11 +75,11 @@ Components created in the app. It's divided in:
     ./components/common
       Smaller components that can be used in main components for several cases
 
---client/src/styles
-Styles applied for all the app. Contains the variables, the imports and the main app styles
+    ./client/src/styles
+      Styles applied for all the app. Contains the variables, the imports and the main app styles
 
---client/src/jest
-Files used by Jest to test the app
+    ./client/src/jest
+      Files used by Jest to test the app
 
---client/src/types
-Models used to type the context data and the api responses (adapetd and not adapted)
+    ./client/src/types
+      Models used to type the context data and the api responses (adapetd and not adapted)
