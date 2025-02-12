@@ -83,3 +83,17 @@ To run the project locally, follow these steps:
 
     ./client/src/types
       Models used to type the context data and the api responses (adapetd and not adapted)
+
+## Tests
+
+Tests are done by jest. The tests are of types, context, functions and components.
+To carry out the test, just type:
+
+```sh
+npm run test
+```
+
+## Deploy and minify
+
+Both servers (Node and React) are prepared to be deployed and minified.
+Server has a line in index.ts that triggers build when deployed in prod, and client has it's build files ready (and can be updated with an npm run build)
