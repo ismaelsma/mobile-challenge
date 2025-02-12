@@ -35,9 +35,8 @@ const PhoneDetail: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Extraer el parámetro 'search' de la query string solo una vez cuando el componente se monta
     const queryParams = new URLSearchParams(location.search);
-    const query = queryParams.get('phoneid'); // El parámetro 'search'
+    const query = queryParams.get('phoneid');
 
     if (query) {
       fetchPhoneDetail(query);
@@ -92,7 +91,7 @@ const PhoneDetail: React.FC = () => {
                   {phoneDetail.name}
                 </h1>
                 <h2 className="phone-detail__content-titles-lowerprice">
-                  From {getMinorPrice(phoneDetail.storageOptions)} EUR
+                  {`${selectedStorage.price || `From ${getMinorPrice(phoneDetail.storageOptions)}`} EUR`}
                 </h2>
               </div>
               <div className="phone-detail__content-storage">
@@ -131,6 +130,11 @@ const PhoneDetail: React.FC = () => {
                     ></button>
                   ))}
                 </div>
+                {selectedColor.name !== '' && (
+                  <p className="phone-detail__content-color-name">
+                    {selectedColor.name}
+                  </p>
+                )}
               </div>
               <div className="phone-detail__content-add">
                 <CustomButton

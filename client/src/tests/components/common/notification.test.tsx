@@ -34,7 +34,7 @@ describe('Notification', () => {
     expect(notification).toHaveClass('--visible');
 
     act(() => {
-      jest.advanceTimersByTime(3000); // Avanzamos el tiempo para simular 3 segundos
+      jest.advanceTimersByTime(3000);
     });
 
     // Checks that notification disappears

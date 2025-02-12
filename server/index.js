@@ -6,6 +6,10 @@ const https = require("https");
 
 const PORT = process.env.PORT || 3001;
 
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "build")));
+}
+
 const app = express();
 app.use(cors());
 
