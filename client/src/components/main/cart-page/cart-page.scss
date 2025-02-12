@@ -42,6 +42,7 @@
       }
 
       &-image {
+        padding: $size6;
         width: 60%;
 
         @include respond-to(small) {
