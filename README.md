@@ -69,11 +69,11 @@ To run the project locally, follow these steps:
     ./client/src/components
       Components created in the app. It's divided in:
 
-    ./components/main
-      Core components of the app
+      ./components/main
+        Core components of the app
 
-    ./components/common
-      Smaller components that can be used in main components for several cases
+      ./components/common
+        Smaller components that can be used in main components for several cases
 
     ./client/src/styles
       Styles applied for all the app. Contains the variables, the imports and the main app styles
