@@ -97,3 +97,8 @@ npm run test
 
 Both servers (Node and React) are prepared to be deployed and minified.
 Server has a line in index.ts that triggers build when deployed in prod, and client has it's build files ready (and can be updated with an npm run build)
+
+## Other functions
+
+The app has also esLint and preetify to indent and format the code.
+Configuration will be installed directly in npm start, but be careful not to have a custom configuration in the extensions of your IDE
