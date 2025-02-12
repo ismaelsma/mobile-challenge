@@ -15,6 +15,7 @@ This is a mobile shop web application where users can browse different mobile ph
 - **React**: The frontend of the app is built with React.
 - **React Router**: Used for client-side routing between different pages like phone list, phone details, and cart.
 - **Context API**: Used for state management to handle global app states such as cart items, phone list, and loading states.
+- **Node**: Backend is managed by a node server in the /server folder
 - **Jest & React Testing Library**: For unit and integration testing of components and functionality.
 - **Typescript**: To type all the api calls and information of the components
 - **SCSS**: For styling the application with custom themes and responsive layouts.
@@ -56,3 +57,29 @@ To run the project locally, follow these steps:
 5. Open the Project in Your Browse
 
    Go to localhost:3000 in your browser
+
+## Folder structure
+
+-server
+Contains Node Backend server
+
+-client
+Contains React Frontal server
+
+--client/src/components
+Components created in the app. It's divided in:
+
+    ./components/main
+      Core components of the app
+
+    ./components/common
+      Smaller components that can be used in main components for several cases
+
+--client/src/styles
+Styles applied for all the app. Contains the variables, the imports and the main app styles
+
+--client/src/jest
+Files used by Jest to test the app
+
+--client/src/types
+Models used to type the context data and the api responses (adapetd and not adapted)
