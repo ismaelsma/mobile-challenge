@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import { createContext, useState, useContext, useEffect } from 'react';
 import {
   ICartItemsContext,
   IPhoneDetailContext,
@@ -25,7 +25,7 @@ const PhonesListContext = createContext<IPhoneListContext>({
 
 export const PhonesListProvider = ({ children }) => {
   const [phonesList, setPhonesList] = useState<IPhoneListItem[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [prevSearch, setPrevSearch] = useState<string>('');
 
   const fetchPhonesList = async (searchText?: string) => {
