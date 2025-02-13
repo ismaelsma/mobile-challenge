@@ -13,6 +13,9 @@ export const mockFunctionsSpecs = {
 };
 
 export const mockFunctionsSpecsParsed = [
+  { title: 'BRAND', value: 'samsung' },
+  { title: 'MODEL', value: 'Galaxy S20' },
+  { title: 'DESCRIPTION', value: 'The best phone' },
   { title: 'SCREEN', value: '6.5 inches' },
   { title: 'RESOLUTION', value: '1080 x 2400' },
   { title: 'PROCESSOR', value: 'Snapdragon 888' },

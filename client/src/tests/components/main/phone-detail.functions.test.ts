@@ -14,7 +14,16 @@ import {
 
 describe('adaptSpecsToList function', () => {
   test('should adapt specs correctly', () => {
-    const adaptedList = adaptSpecsToList([mockFunctionsSpecs]);
+    const adaptedList = adaptSpecsToList([
+      {
+        brand: 'samsung',
+        model: 'Galaxy S20',
+        description: 'The best phone'
+      } as any,
+      {
+        ...mockFunctionsSpecs
+      }
+    ]);
     expect(adaptedList).toEqual(mockFunctionsSpecsParsed);
   });
 });
