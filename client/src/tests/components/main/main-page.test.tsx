@@ -20,6 +20,6 @@ describe('MainPage component', () => {
     expect(mainPageDiv).toBeInTheDocument();
 
     // Check that PhonesList is called
-    expect(PhonesList).toHaveBeenCalledTimes(1); // Verificamos que el componente PhonesList se haya llamado una vez
+    expect(PhonesList).toHaveBeenCalledTimes(1);
   });
 });
