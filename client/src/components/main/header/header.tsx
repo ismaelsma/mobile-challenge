@@ -1,15 +1,20 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useCartItemsContext, usePhonesListContext } from '../../../context';
 import { ICartItemsModel } from '../../../types/cart.types';
 import { RoutePaths } from '../../../types/routes.types';
 
 const Header = () => {
   const { cartItems } = useCartItemsContext();
-  const { forceSetLoadingTrue } = usePhonesListContext();
+  const { forceSetLoadingTrue, fetchPhonesList } = usePhonesListContext();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const mainMenu = () => {
-    forceSetLoadingTrue();
+    if (location.pathname.includes(RoutePaths.PHONE_LIST)) {
+      fetchPhonesList();
+    } else {
+      forceSetLoadingTrue();
+    }
     navigate(RoutePaths.PHONE_LIST);
   };
 
