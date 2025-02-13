@@ -30,6 +30,7 @@ const PhonesList = () => {
   }, []);
 
   useEffect(() => {
+    debugger;
     // This function will only be triggerred if user stops typing for 0.3 seconds
     const callTimeoutDelay = setTimeout(() => {
       navigate(
