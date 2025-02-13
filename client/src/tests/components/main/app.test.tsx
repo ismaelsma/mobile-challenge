@@ -11,7 +11,6 @@ import * as Context from '../../../context';
 import { mockHeaderCartItems } from '../../../tests/mocks/components/main/header.mocks';
 import { mockPhone } from '../../../tests/mocks/components/main/phones-list.mocks';
 
-// Mock de los módulos
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: jest.fn()
@@ -23,7 +22,6 @@ jest.mock('../../../context', () => ({
   usePhonesListContext: jest.fn()
 }));
 
-// Mock de la función fetch global
 global.fetch = jest.fn();
 
 describe('App Component', () => {
@@ -45,19 +43,16 @@ describe('App Component', () => {
       forceSetLoadingTrue: jest.fn()
     };
 
-    // Simula el contexto de usePhonesListContext
     (Context.usePhonesListContext as jest.Mock).mockReturnValue(
       mockContextValue
     );
 
-    // Simula el contexto de useCartItemsContext
     (Context.useCartItemsContext as jest.Mock).mockReturnValue({
       cartItems: mockHeaderCartItems
     });
 
-    // Simulamos una respuesta exitosa de fetch para evitar errores de JSON
     (fetch as jest.Mock).mockResolvedValueOnce({
-      ok: true, // Simulamos una respuesta exitosa
+      ok: true,
       json: jest.fn().mockResolvedValueOnce([
         { id: 1, name: 'iPhone 12' },
         { id: 2, name: 'Samsung Galaxy S21' }
@@ -98,12 +93,10 @@ describe('App Component', () => {
       render(<App />);
     });
 
-    // Esperamos que la respuesta de fetch se haya completado y que los teléfonos estén en el DOM
     await waitFor(() =>
       expect(screen.getByText('iPhone 12')).toBeInTheDocument()
     );
 
-    // Verificamos que la función fetch fue llamada
-    expect(fetch).toHaveBeenCalledTimes(0); // Se debe haber llamado a fetch
+    expect(fetch).toHaveBeenCalledTimes(0);
   });
 });
