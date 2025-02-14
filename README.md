@@ -27,7 +27,7 @@ To run the project locally, follow these steps:
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/yourusername/mobile-shop-app.git
+   git clone https://github.com/ismaelsma/mobile-challenge.git
    ```
 
 2. Navigate to project directory
